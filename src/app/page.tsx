@@ -51,7 +51,7 @@ export default function Home() {
             </Paragraph>
           </div>
         </section>
-        <section id="contact" className="grid grid-cols-5">
+        <section id="contact" className="grid grid-cols-2 md:grid-cols-5">
           <Link href="https://www.linkedin.com/in/marcogoedert" target="_blank">
             <Button variant="ghost">
               <LinkedInLogoIcon className="mr-2" />
