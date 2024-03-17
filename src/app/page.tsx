@@ -2,13 +2,19 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import WavingHand from "@/ui/atoms/icons/waving-hand";
 import { Paragraph } from "@/ui/atoms/typography";
-import { EnvelopeClosedIcon, GitHubLogoIcon, InstagramLogoIcon, LinkedInLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
+import {
+  EnvelopeClosedIcon,
+  GitHubLogoIcon,
+  InstagramLogoIcon,
+  LinkedInLogoIcon,
+  TwitterLogoIcon,
+} from "@radix-ui/react-icons";
 import Link from "next/link";
 import { Suspense } from "react";
 
 export default function Home() {
   return (
-    <main className="grid items-stretch gap-x-4 gap-y-24 grid-cols-[1fr_minmax(auto,640px)_1fr] min-h-screen flex-col justify-between p-24">
+    <main className="grid items-stretch gap-x-4 gap-y-24 grid-cols-[1fr_minmax(auto,640px)_1fr] min-h-screen pt-24">
       <div id="personal-info" className="col-start-2 flex flex-col gap-y-12">
         <section id="about-me" className="grid grid-cols-1 gap-y-4">
           <div className="flex gap-6 mb-6">
