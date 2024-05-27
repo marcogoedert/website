@@ -16,9 +16,9 @@ export default function Home() {
   return (
     <main className="grid items-stretch gap-x-4 gap-y-24 grid-cols-[1fr_minmax(auto,640px)_1fr] min-h-screen pt-24">
       <div id="personal-info" className="col-start-2 flex flex-col gap-y-12">
-        <section id="about-me" className="grid grid-cols-1 gap-y-4">
-          <div className="flex gap-6 mb-6">
-            <Avatar className="h-24 w-24 hover:scale-125 transition-transform duration-300">
+        <section id="about-me" className="grid grid-cols-1 gap-y-10">
+          <div className="flex gap-6">
+            <Avatar className="h-24 w-24 hover:scale-105 transition-transform duration-300">
               <AvatarImage
                 src="https://github.com/marcogoedert.png"
                 alt="Marco Goedert"
@@ -40,7 +40,7 @@ export default function Home() {
               </Suspense>
             </Paragraph>
             <Paragraph>
-              I&apos;m a Brazil based music enthusiast and software engineer
+              I&apos;m Marco, a Brazil based music enthusiast and software engineer
               currently working at Dell Technologies on DevOps Test Tools team.
             </Paragraph>
             <Paragraph>

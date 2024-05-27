@@ -3,11 +3,16 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import { Masthead } from "@/ui/organisms/masthead";
+import Footer from "@/ui/organisms/Footer/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Marco Goedert",
+  title: {
+    default: "Marco Goedert",
+    template: "%s | Marco Goedert"
+  },
+  
   description:
     "Marco Goedert is a software engineer from Porto Alegre, Brazil.",
 };
@@ -28,6 +33,7 @@ export default function RootLayout({
         >
           <Masthead />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

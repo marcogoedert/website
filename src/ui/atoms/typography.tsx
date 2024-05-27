@@ -10,7 +10,7 @@ interface ParagraphProps extends React.HTMLAttributes<HTMLParagraphElement> {
 
 export function H3(props: H3Props) {
     return (
-      <h3 className={cn("scroll-m-20 text-2xl font-semibold tracking-tight", props.className)} {...props}>
+      <h3 {...props} className={cn("scroll-m-20 text-2xl font-semibold tracking-tight", props.className)}>
         {props.children}
       </h3>
     )
