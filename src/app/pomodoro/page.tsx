@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { H3 } from "@/ui/atoms/typography";
+import Timer from "@/ui/molecules/timer/timer";
 import Pomodoro from "@/ui/organisms/PomodoroTimer/pomodoro-root";
 import Grid from "@/ui/templates/Grid";
 import { Metadata } from "next";
@@ -18,7 +19,7 @@ export default function PomodoroPage() {
         <div id="pomodoro-timer" className="col-start-2">
           <H3 className="mb-4 text-center">🍅 Pomodoro Timer</H3>
           <Suspense fallback={<div>Loading...</div>}>
-            <Pomodoro></Pomodoro>
+            <Timer/>
           </Suspense>
           <Separator className="my-4" />
           <ol>

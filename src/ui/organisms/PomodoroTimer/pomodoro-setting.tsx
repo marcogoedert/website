@@ -15,7 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/ui/molecules/dialog";
+} from "@/components/ui/dialog";
 import { ClockIcon, GearIcon } from "@radix-ui/react-icons";
 import usePomodoro from "./hooks/use-pomodoro";
 import {
