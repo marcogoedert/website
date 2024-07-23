@@ -36,7 +36,7 @@ export default function usePomodoro() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    
     setPomodoro(values);
   }
 

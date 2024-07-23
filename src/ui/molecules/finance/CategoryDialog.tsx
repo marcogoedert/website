@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, ButtonProps } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -15,96 +15,62 @@ import {
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage
 } from '@/components/ui/form';
-import { Category, CategoryIcon, CategoryIconEnum } from '@/entities/Category';
+import { Category } from '@/entities/Category';
+
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from '@/components/ui/select';
-import {
-    Bike,
-    Bone,
-    Car,
-    CreditCard,
-    Cross,
-    Drama,
-    HandHeart,
-    Home,
-    Hospital,
-    Landmark,
-    PawPrint,
-    Shapes,
-    ShieldAlert,
-    ShoppingBag,
-    ShoppingBasket,
-    Sprout
-} from 'lucide-react';
-import { deleteCategory } from '@/ui/organisms/Finance/Category/CategoryList';
-import { cn } from '@/lib/utils';
+
 import { DialogClose } from '@radix-ui/react-dialog';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Icon from '@/ui/atoms/icons/Icon';
+import { IconEnum, IconKey } from '@/entities/Icon';
+import {
+    addCategory,
+    deleteCategory,
+    updateCategory
+} from '@/controller/finance/category.controller';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger
+} from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList
+} from '@/components/ui/command';
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
-    icon: z.string()
+    icon: z
+        .string()
+        .refine((iconName) => Object.keys(IconEnum).includes(iconName), {
+            message: 'Invalid Icon Name'
+        })
 });
-
-interface CategoryDialogProps extends ButtonProps {
+interface CategoryDialogProps {
     category?: Category;
     callback: () => Promise<void>;
+    children: React.ReactNode;
 }
 
-function getIcon(iconName: CategoryIcon) {
-    const iconSettings = {
-        width: 20,
-        strokeWidth: 1
-    };
-
-    switch (iconName) {
-        case 'BIKE':
-            return <Bike {...iconSettings} />;
-        case 'BONE':
-            return <Bone {...iconSettings} />;
-        case 'CAR':
-            return <Car {...iconSettings} />;
-        case 'CREDIT_CARD':
-            return <CreditCard {...iconSettings} />;
-        case 'DRAMA':
-            return <Drama {...iconSettings} />;
-        case 'HAND_HEART':
-            return <HandHeart {...iconSettings} />;
-        case 'HEALTH':
-            return <Cross {...iconSettings} />;
-        case 'HOME':
-            return <Home {...iconSettings} />;
-        case 'HOSPITAL':
-            return <Hospital {...iconSettings} />;
-        case 'LANDMARK':
-            return <Landmark {...iconSettings} />;
-        case 'PAW_PRINT':
-            return <PawPrint {...iconSettings} />;
-        default:
-        case 'SHAPES':
-            return <Shapes {...iconSettings} />;
-        case 'SHIELD_ALERT':
-            return <ShieldAlert {...iconSettings} />;
-        case 'SHOPPING_BAG':
-            return <ShoppingBag {...iconSettings} />;
-        case 'SHOPPING_BASKET':
-            return <ShoppingBasket {...iconSettings} />;
-        case 'SPROUT':
-            return <Sprout {...iconSettings} />;
-    }
+// ! TO-DO: Remove this function
+export function printValue(field: unknown, prepend?: string) {
+    const prefix = prepend ? `${prepend}` : 'printValue:';
+    console.log(prefix, field);
+    return <></>;
 }
 
 export default function CategoryDialog({
@@ -113,43 +79,49 @@ export default function CategoryDialog({
     ...props
 }: CategoryDialogProps) {
     const [open, setOpen] = useState(false);
+    const categoryName = category?.name || 'New Category';
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: category
-            ? {
-                  name: category.name,
-                  icon: category.icon
-              }
-            : undefined
+        defaultValues: {
+            name: category?.name || '',
+            icon: category?.icon || 'SHAPES'
+        }
     });
+
+    useEffect(() => {
+        if (form.formState.isSubmitSuccessful) {
+            form.reset({
+                name: category?.name || '',
+                icon: category?.icon || 'SHAPES'
+            });
+        }
+    }, [form.formState, form.reset, category]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const newCategory = new Category(
-            category?.id || String(Date.now()),
+            category?.id || String(Date.now()), // If category exists, use its ID, else use empty string.
             values.name,
-            values.icon as CategoryIcon
+            values.icon as IconKey
         );
 
         const method = category ? 'PATCH' : 'POST';
+        const body = JSON.stringify(newCategory);
 
-        const response = await fetch('http://localhost:3000/api/category', {
-            method,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newCategory),
-            next: {
-                tags: ['category']
-            }
-        });
-        if (response.ok) {
-            console.log(`❤️ ~ onSubmit ~ Category ${method} Success`);
+        console.debug(`🚀 ~ onSubmit ~ Category ${method} Request`, body);
+
+        let ok = false;
+        if (category) {
+            ok = await updateCategory(body);
+        } else {
+            ok = await addCategory(body);
+        }
+
+        if (ok) {
             await callback();
         } else {
             console.error(`🚨 ~ onSubmit ~ Category ${method} Failed`);
         }
-        form.reset();
         setOpen(false);
     }
 
@@ -159,9 +131,6 @@ export default function CategoryDialog({
         form.reset();
         await callback();
     }
-
-    const categoryName = category?.name || 'New Category';
-    const iconElement = getIcon(category?.icon || 'SHAPES');
 
     return (
         <Dialog
@@ -173,21 +142,12 @@ export default function CategoryDialog({
                 setOpen((prev) => !prev);
             }}
         >
-            <DialogTrigger asChild>
-                <Button
-                    {...props}
-                    className={cn(
-                        'inline-flex gap-2 w-full items-center justify-start ',
-                        props.className
-                    )}
-                >
-                    {iconElement} {categoryName}
-                </Button>
-            </DialogTrigger>
+            <DialogTrigger asChild>{props.children}</DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle className='inline-flex gap-2 items-center'>
-                        {iconElement} {categoryName}
+                        <Icon icon={category?.icon || 'SHAPES'} />{' '}
+                        {categoryName}
                     </DialogTitle>
                     <DialogDescription>
                         Make changes to the category &quot;{categoryName}
@@ -211,49 +171,110 @@ export default function CategoryDialog({
                                         <FormLabel>Name</FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder={categoryName}
+                                                placeholder={
+                                                    field.value || categoryName
+                                                }
                                                 {...field}
                                             />
                                         </FormControl>
+                                        <FormDescription>
+                                            The category name.
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
+
                             {/* Category Icon */}
                             <FormField
                                 control={form.control}
                                 name='icon'
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem className='flex flex-col'>
                                         <FormLabel>Icon</FormLabel>
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            defaultValue={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder='Select an icon to display' />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent className='grid grid-cols-3'>
-                                                {Object.keys(
-                                                    CategoryIconEnum
-                                                ).map((icon) => (
-                                                    <SelectItem
-                                                        key={icon}
-                                                        value={icon}
-                                                        className='col-span-1'
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <FormControl>
+                                                    <Button
+                                                        variant='outline'
+                                                        role='combobox'
+                                                        className={cn(
+                                                            'w-[200px] justify-between',
+                                                            !field.value &&
+                                                                'text-muted-foreground'
+                                                        )}
                                                     >
-                                                        <span className='inline-flex w-full gap-2 items-center'>
-                                                            {getIcon(
-                                                                icon as CategoryIcon
-                                                            )}
-                                                            {icon}
-                                                        </span>
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                                        {field.value ? (
+                                                            <>
+                                                                <Icon
+                                                                    icon={
+                                                                        field.value as IconKey
+                                                                    }
+                                                                />
+                                                                {
+                                                                    IconEnum[
+                                                                        field.value as IconKey
+                                                                    ]
+                                                                }
+                                                            </>
+                                                        ) : (
+                                                            'Select an icon to display'
+                                                        )}
+                                                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className='w-[200px] p-0'>
+                                                <Command>
+                                                    <CommandInput placeholder='Search icons...' />
+                                                    <CommandEmpty>
+                                                        No icons found.
+                                                    </CommandEmpty>
+                                                    <CommandGroup>
+                                                        <CommandList>
+                                                            {Object.keys(
+                                                                IconEnum
+                                                            ).map((icon) => (
+                                                                <CommandItem
+                                                                    value={icon}
+                                                                    key={icon}
+                                                                    onSelect={() => {
+                                                                        form.setValue(
+                                                                            'icon',
+                                                                            icon
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            'mr-2 h-4 w-4',
+                                                                            icon ===
+                                                                                field.value
+                                                                                ? 'opacity-100'
+                                                                                : 'opacity-0'
+                                                                        )}
+                                                                    />
+                                                                    <Icon
+                                                                        icon={
+                                                                            icon as IconKey
+                                                                        }
+                                                                        className='mr-2'
+                                                                    />
+                                                                    {
+                                                                        IconEnum[
+                                                                            icon as IconKey
+                                                                        ]
+                                                                    }
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandList>
+                                                    </CommandGroup>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        <FormDescription>
+                                            The category icon.
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}

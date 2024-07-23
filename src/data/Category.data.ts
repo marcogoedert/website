@@ -58,5 +58,10 @@
     "id": "1718021840676",
     "name": "Uncategorized",
     "icon": "SHAPES"
+  },
+  {
+    "id": "1721745790660",
+    "name": "Restaurant",
+    "icon": "BIKE"
   }
 ]

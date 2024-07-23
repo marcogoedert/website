@@ -1,6 +1,4 @@
-import { CategoryService } from '@/service/finance/CategoryService';
-
-const categoryService = CategoryService.getInstance();
+import { ExpenseService } from '@/service/finance/ExpenseService';
 
 interface PathParams {
     params: {
@@ -13,12 +11,13 @@ export async function GET(
     { params }: PathParams
 ): Promise<Response> {
     const { id } = params;
-    
+
     try {
-        const category = await categoryService.getCategory(id);
-        return Response.json(category);
+        const expenseService = await ExpenseService.getInstance();
+        const expense = await expenseService.getExpense(id);
+        return Response.json(expense);
     } catch (error) {
-        console.error('↘️🚨 ~ GET /api/category ~ FAILED', error);
+        console.error('↘️🚨 ~ GET /api/expense ~ FAILED', error);
         return new Response(`Category ${id} not found`, { status: 404 });
     }
 }
@@ -28,12 +27,11 @@ export async function DELETE(
     { params }: PathParams
 ): Promise<Response> {
     const { id } = params;
-    
-    const ok = await categoryService.deleteCategory(id);
+    const expenseService = await ExpenseService.getInstance();
+    const ok = await expenseService.deleteExpense(id);
     if (ok) {
-        
         return new Response(undefined, { status: 204 });
     }
-    
+
     return new Response('Category not found', { status: 404 });
 }

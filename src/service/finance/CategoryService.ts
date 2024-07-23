@@ -1,9 +1,8 @@
-
 import { Category } from '@/entities/Category';
-import { readJsonFile } from '@/lib/json-handler';
-import { CategoryRepository } from '@/repositories/CategoryRepository';
 import { BaseRepository } from '@/repositories/base/BaseRepository';
+import { JsonRepository } from '@/repositories/base/JsonRepository';
 
+const CATEGORY_DATA_FILE_PATH = 'src/data/Category.data.ts';
 export class CategoryService {
     private static instance: CategoryService;
     private categoriesRepository: BaseRepository<Category>;
@@ -14,7 +13,9 @@ export class CategoryService {
 
     public static getInstance(): CategoryService {
         if (!CategoryService.instance) {
-            const categoriesRepository = new CategoryRepository();
+            const categoriesRepository = new JsonRepository<Category>(
+                CATEGORY_DATA_FILE_PATH
+            );
             categoriesRepository.init();
             CategoryService.instance = new CategoryService(
                 categoriesRepository
@@ -26,6 +27,10 @@ export class CategoryService {
 
     public async getCategories(): Promise<Category[]> {
         return await this.categoriesRepository.findAll();
+    }
+
+    public async getCategory(categoryId: string): Promise<Category> {
+        return await this.categoriesRepository.findOne(categoryId);
     }
 
     public async addCategory(category: Category): Promise<boolean> {

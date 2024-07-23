@@ -3,5 +3,9 @@
         "clsx",
         "lucide",
         "Pomodoro"
+    ],
+    "cSpell.ignoreWords": [
+        "Parameterless",
+        "hookform"
     ]
 }

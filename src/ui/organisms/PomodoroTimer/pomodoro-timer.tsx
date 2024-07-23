@@ -76,7 +76,7 @@ export default function PomodoroTimer(): JSX.Element {
     if (newMode === mode) {
       return;
     }
-    console.log("[onClick] User switched to", newMode, "mode");
+    
     setMode(newMode);
     setIsTimerActive(false);
   };
@@ -86,7 +86,7 @@ export default function PomodoroTimer(): JSX.Element {
    */
   useEffect(() => {
     if (mode === "focus") {
-      console.log("[useEffect] Set timer to Focus mode");
+      
       setTimer({
         selectedTimer: { ...timers.focus },
         maxCount: timers.focus.minutes * 60 + timers.focus.seconds,
@@ -94,7 +94,7 @@ export default function PomodoroTimer(): JSX.Element {
         counter: 0,
       });
     } else if (mode === "shortBreak") {
-      console.log("[useEffect] Set timer to Short-Break mode");
+      
       setTimer({
         selectedTimer: { ...timers.shortBreak },
         maxCount: timers.shortBreak.minutes * 60 + timers.shortBreak.seconds,
@@ -102,7 +102,7 @@ export default function PomodoroTimer(): JSX.Element {
         counter: 0,
       });
     } else {
-      console.log("[useEffect] Set timer to Long-Break mode");
+      
       setTimer({
         selectedTimer: { ...timers.longBreak },
         maxCount: timers.longBreak.minutes * 60 + timers.longBreak.seconds,
@@ -122,7 +122,7 @@ export default function PomodoroTimer(): JSX.Element {
       return;
     }
     async function countTimer() {
-      console.log("Time left:", timer.currentTimer);
+      
       await delay(1000);
 
       if (timer.currentTimer.seconds > 0) {
@@ -153,7 +153,7 @@ export default function PomodoroTimer(): JSX.Element {
           },
         }));
       } else {
-        console.log("Timer finished!!");
+        
         setIsTimerActive(false);
       }
       return () => {};
