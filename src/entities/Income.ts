@@ -1,15 +1,25 @@
-import { Category } from './Category';
-import { Transaction } from './Transaction';
+import { Entity } from './Entity';
 
-export class Income extends Transaction {
+export class Income extends Entity {
+    public readonly accountId: string;
+    public readonly name: string;
+    public readonly amount: number;
+    public readonly date: Date;
+    public readonly categoryId: string;
 
     constructor(
+        id: string,
+        accountId: string,
         name: string,
+        amount: number,
         date: Date,
-        category: Category,
-        value: number
+        categoryId: string
     ) {
-        super(name, value, date, category);
-        
+        super(id);
+        this.accountId = accountId;
+        this.name = name;
+        this.amount = amount;
+        this.date = date;
+        this.categoryId = categoryId;
     }
 }
