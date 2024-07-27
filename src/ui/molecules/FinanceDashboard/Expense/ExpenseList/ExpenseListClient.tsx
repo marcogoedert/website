@@ -8,6 +8,7 @@ import ExpenseDialog from '../ExpenseDialog';
 import { fetchExpenses } from '@/controller/finance/expenses.controller';
 import { Category } from '@/entities/Category';
 import { format } from 'date-fns';
+import { Plus } from 'lucide-react';
 
 interface ExpenseListClientProps {
     initialValue: Expense[];
@@ -51,7 +52,19 @@ export default function ExpenseListClient({
 
     async function callback() {
         const newExpenses = await fetchExpenses();
-        setExpenses(newExpenses);
+        setExpenses(
+            newExpenses.map(
+                (expense) =>
+                    new Expense(
+                        expense.id,
+                        expense.accountId,
+                        expense.name,
+                        expense.amount,
+                        new Date(expense.date),
+                        expense.categoryId
+                    )
+            )
+        );
     }
 
     const rows =
@@ -108,7 +121,7 @@ export default function ExpenseListClient({
                         callback={callback}
                         categories={categories}
                     >
-                        <Button variant='secondary'>Add new</Button>
+                        <Button variant='secondary'><Plus className='mr-1'/>Add new</Button>
                     </ExpenseDialog>
                 </div>
                 <div

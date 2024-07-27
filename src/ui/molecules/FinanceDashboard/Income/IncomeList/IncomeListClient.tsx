@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Icon from '@/ui/atoms/icons/Icon';
 import { Button } from '@/components/ui/button';
 import { Category } from '@/entities/Category';
@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { Income } from '@/entities/Income';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import IncomeDialog from '../IncomeDialog';
+import { Plus } from 'lucide-react';
 
 interface IncomeListClientProps {
     initialValue: Income[];
@@ -36,7 +37,7 @@ export default function IncomeListClient({
     maxItems = 5
 }: IncomeListClientProps): JSX.Element {
     const [incomes, setIncomes] = useState<Income[]>(
-        initialValue?.map((income) => {
+        initialValue.map((income) => {
             return new Income(
                 income.id,
                 income.accountId,
@@ -47,13 +48,25 @@ export default function IncomeListClient({
             );
         }) || []
     );
-    const recentIncomes = incomes.slice(0, maxItems);
 
-    async function callback() {
+    const callback = useCallback(async () => {
         const newIncomes = await fetchIncomes();
-        setIncomes(newIncomes);
-    }
+        setIncomes(
+            newIncomes.map(
+                (income) =>
+                    new Income(
+                        income.id,
+                        income.accountId,
+                        income.name,
+                        income.amount,
+                        new Date(income.date),
+                        income.categoryId
+                    )
+            )
+        );
+    }, []);
 
+    const recentIncomes = incomes.slice(0, maxItems);
     const rows =
         recentIncomes.length > 0 ? (
             recentIncomes.map((income) => (
@@ -108,7 +121,7 @@ export default function IncomeListClient({
                         callback={callback}
                         categories={categories}
                     >
-                        <Button variant='secondary'>Add new</Button>
+                        <Button variant='secondary'><Plus className='mr-1'/>Add new</Button>
                     </IncomeDialog>
                 </div>
                 <div

@@ -66,13 +66,6 @@ interface CategoryDialogProps {
     children: React.ReactNode;
 }
 
-// ! TO-DO: Remove this function
-export function printValue(field: unknown, prepend?: string) {
-    const prefix = prepend ? `${prepend}` : 'printValue:';
-    console.log(prefix, field);
-    return <></>;
-}
-
 export default function CategoryDialog({
     category,
     callback,

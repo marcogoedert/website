@@ -10,7 +10,7 @@ export default async function ExpenseListServer(): Promise<JSX.Element> {
     const categories = await fetchCategories();
 
     return (
-        <div className='grid grid-cols-1 gap-4'>
+        <div className='grid grid-cols-1 gap-4 h-full'>
             <Suspense fallback={<div>Loading expenses...</div>}>
                 <ExpenseListClient initialValue={expenses} categories={categories}/>
             </Suspense>

@@ -1,4 +1,4 @@
-interface PanelContainerProps {
+export interface PanelContainerProps {
     title: string;
     subtitle?: string;
     children: React.ReactNode;

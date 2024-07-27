@@ -8,7 +8,7 @@ import Icon from '@/ui/atoms/icons/Icon';
 
 import { useCallback, useState } from 'react';
 import PanelContainer from '../../PanelContainer';
-import CategoryDialog from '../CategoryDialog';
+import CategoryDialog from '../Dialog/CategoryDialog';
 
 interface CategoryListClientProps {
     initialValue: Category[];
