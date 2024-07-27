@@ -5,6 +5,18 @@ export async function GET(req: Request): Promise<Response> {
     try {
         const incomeService = await IncomeService.getInstance();
         const incomes = await incomeService.getIncomes();
+
+        const searchParams = new URL(req.url).searchParams;
+        const bankAccount = searchParams.get('bankAccount');
+        if (bankAccount) {
+            const filteredExpenses = incomes.filter(
+                (income) => income.accountId === bankAccount
+            );
+            return new Response(JSON.stringify(filteredExpenses), {
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
         return new Response(JSON.stringify(incomes), {
             headers: { 'Content-Type': 'application/json' }
         });

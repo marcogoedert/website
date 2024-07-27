@@ -8,8 +8,15 @@ const nextConfig = {
     tags: ['income']
 };
 
-export async function fetchIncomes(): Promise<Income[]> {
-    const incomes = await get<Income[]>(URL, nextConfig);
+interface FetchIncomesParams {
+    bankAccount: string | string[] | undefined;
+}
+
+export async function fetchIncomes(
+    { bankAccount }: FetchIncomesParams = { bankAccount: undefined }
+): Promise<Income[]> {
+    const url = bankAccount ? `${URL}?bankAccount=${bankAccount}` : URL;
+    const incomes = await get<Income[]>(url, nextConfig);
     if (!incomes) {
         return [];
     }

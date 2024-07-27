@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Expense } from '@/entities/Expense';
 import Icon from '@/ui/atoms/icons/Icon';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { Category } from '@/entities/Category';
 import { format } from 'date-fns';
 import { ArrowRight, Plus } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 interface ExpenseListClientProps {
     initialValue: Expense[];
@@ -37,6 +38,11 @@ export default function ExpenseListClient({
     categories,
     maxItems = 5
 }: ExpenseListClientProps): JSX.Element {
+    const searchParams = useSearchParams();
+    const [bankAccount, setBankAccount] = useState<string>(
+        searchParams.get('bankAccount') || ''
+    );
+
     const [expenses, setExpenses] = useState<Expense[]>(
         initialValue?.map((expense) => {
             return new Expense(
@@ -51,7 +57,7 @@ export default function ExpenseListClient({
     );
 
     async function callback() {
-        const newExpenses = await fetchExpenses();
+        const newExpenses = await fetchExpenses({ bankAccount });
         setExpenses(
             newExpenses.map(
                 (expense) =>
@@ -66,6 +72,18 @@ export default function ExpenseListClient({
             )
         );
     }
+
+    useEffect(() => {
+        const newBankAccount = searchParams.get('bankAccount') || '';
+        if (newBankAccount !== bankAccount) {
+            setBankAccount(newBankAccount);
+        }
+    }, [searchParams]);
+
+    useEffect(() => {
+        callback();
+    }, [bankAccount]);
+
     const recentExpenses = expenses.slice(0, maxItems);
     const expensesThisMonth = expenses.filter(
         (expense) =>
@@ -119,7 +137,8 @@ export default function ExpenseListClient({
                             Recent Expenses
                         </h3>
                         <p className='text-sm text-muted-foreground'>
-                            You made {expensesThisMonth.length} expenses this month.
+                            You made {expensesThisMonth.length} expenses this
+                            month.
                         </p>
                     </div>
                     <Link href='/finance/expenses'>

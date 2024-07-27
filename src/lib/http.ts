@@ -1,5 +1,4 @@
 import { revalidateTag } from 'next/cache';
-import {} from 'next/server';
 
 export async function get<T>(
     url: string,

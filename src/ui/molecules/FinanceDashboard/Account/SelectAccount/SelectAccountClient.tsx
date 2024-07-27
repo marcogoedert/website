@@ -18,6 +18,7 @@ import {
     CommandList
 } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface SelectAccountClientProps {
     initialValue: Account[];
@@ -28,7 +29,9 @@ export default function SelectAccountClient({
 }: SelectAccountClientProps): JSX.Element {
     const [accounts, setAccounts] = useState<Account[]>(initialValue);
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('');
+    const searchParams = useSearchParams();
+    const [value, setValue] = useState(searchParams.get('bankAccount'));
+    const router = useRouter();
 
     return (
         <>
@@ -53,7 +56,6 @@ export default function SelectAccountClient({
                 </PopoverTrigger>
                 <PopoverContent className='w-[200px] p-0'>
                     <Command>
-                        <CommandInput placeholder='Search bank account...' />
                         <CommandEmpty>No bank accounts found.</CommandEmpty>
                         <CommandGroup>
                             <CommandList>
@@ -62,11 +64,15 @@ export default function SelectAccountClient({
                                         key={index}
                                         value={account.id}
                                         onSelect={(selectedValue) => {
-                                            setValue(
-                                                selectedValue === value
-                                                    ? ''
-                                                    : selectedValue
-                                            );
+                                            if (selectedValue === value) {
+                                                setValue('');
+                                                router.push('/finance');
+                                            } else {
+                                                setValue(selectedValue);
+                                                router.push(
+                                                    `/finance?bankAccount=${selectedValue}`
+                                                );
+                                            }
                                             setOpen(false);
                                         }}
                                     >

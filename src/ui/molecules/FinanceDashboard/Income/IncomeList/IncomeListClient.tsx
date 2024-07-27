@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Icon from '@/ui/atoms/icons/Icon';
 import { Button } from '@/components/ui/button';
 import { Category } from '@/entities/Category';
@@ -10,9 +10,10 @@ import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import IncomeDialog from '../IncomeDialog';
 import { ArrowRight, Plus } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 interface IncomeListClientProps {
-    initialValue: Income[];
+    list: Income[];
     categories: Category[];
     maxItems?: number;
 }
@@ -33,12 +34,17 @@ function formatDate(date: Date): string {
 }
 
 export default function IncomeListClient({
-    initialValue,
+    list,
     categories,
     maxItems = 5
 }: IncomeListClientProps): JSX.Element {
+    const searchParams = useSearchParams();
+    const [bankAccount, setBankAccount] = useState<string>(
+        searchParams.get('bankAccount') || ''
+    );
+
     const [incomes, setIncomes] = useState<Income[]>(
-        initialValue.map((income) => {
+        list.map((income) => {
             return new Income(
                 income.id,
                 income.accountId,
@@ -51,7 +57,7 @@ export default function IncomeListClient({
     );
 
     const callback = useCallback(async () => {
-        const newIncomes = await fetchIncomes();
+        const newIncomes = await fetchIncomes({ bankAccount });
         setIncomes(
             newIncomes.map(
                 (income) =>
@@ -65,7 +71,18 @@ export default function IncomeListClient({
                     )
             )
         );
-    }, []);
+    }, [bankAccount]);
+
+    useEffect(() => {
+        const newBankAccount = searchParams.get('bankAccount') || '';
+        if (newBankAccount !== bankAccount) {
+            setBankAccount(newBankAccount);
+        }
+    }, [searchParams]);
+
+    useEffect(() => {
+        callback();
+    }, [bankAccount]);
 
     const recentIncomes = incomes.slice(0, maxItems);
     const incomesThisMonth = incomes.filter(
@@ -120,7 +137,8 @@ export default function IncomeListClient({
                             Recent Incomes
                         </h3>
                         <p className='text-sm text-muted-foreground'>
-                            You got {incomesThisMonth.length} incomes this month.
+                            You got {incomesThisMonth.length} incomes this
+                            month.
                         </p>
                     </div>
                     <Link href='/finance/incomes'>

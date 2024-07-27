@@ -46,6 +46,7 @@ import Icon from '@/ui/atoms/icons/Icon';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -72,6 +73,7 @@ export default function IncomeDialog({
     const [open, setOpen] = useState(false);
     const [categoryOpen, setCategoryOpen] = useState(false);
     const incomeName = income?.name || 'New Income';
+    const searchParams = useSearchParams();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -86,7 +88,7 @@ export default function IncomeDialog({
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const newIncome = new Income(
             income?.id || String(Date.now()),
-            income?.accountId || '0',
+            searchParams.get('bankAccount') || '0',
             values.name,
             values.amount,
             values.date,

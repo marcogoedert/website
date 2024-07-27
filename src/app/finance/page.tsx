@@ -1,16 +1,24 @@
 import SelectAccount from '@/ui/molecules/FinanceDashboard/Account/SelectAccount';
 import ExpenseList from '@/ui/molecules/FinanceDashboard/Expense/ExpenseList';
-import CategoryList from '@/ui/molecules/FinanceDashboard/Category/CategoryList';
 import IncomeList from '@/ui/molecules/FinanceDashboard/Income/IncomeList';
 import { fetchExpenses } from '@/controller/finance/expenses.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import { NumericPanel } from '@/ui/molecules/FinanceDashboard/Panel/NumericPanel';
 import HomeMenu from '@/ui/molecules/FinanceDashboard/ActionMenu/HomeMenu';
-import { BreadcrumbServer } from '@/ui/molecules/FinanceDashboard/Breadcrumb';
 
-export default async function FinancePage(): Promise<JSX.Element> {
-    const incomes = await fetchIncomes();
-    const expenses = await fetchExpenses();
+interface FinancePageProps {
+    searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default async function FinancePage({
+    searchParams
+}: FinancePageProps): Promise<JSX.Element> {
+    const incomes = await fetchIncomes({
+        bankAccount: searchParams['bankAccount']
+    });
+    const expenses = await fetchExpenses({
+        bankAccount: searchParams['bankAccount']
+    });
     const totalIncome = incomes.reduce((acc, i) => acc + i.amount, 0);
     const totalExpense = expenses.reduce((acc, e) => acc + e.amount, 0);
 
@@ -47,14 +55,11 @@ export default async function FinancePage(): Promise<JSX.Element> {
                     />
                 </div>
                 <div className={gridContainerClass}>
-                    <IncomeList />
+                    <IncomeList list={incomes} />
                 </div>
                 <div className={gridContainerClass}>
-                    <ExpenseList />
+                    <ExpenseList list={expenses} />
                 </div>
-                {/* <div className={gridContainerClass}>
-                        <CategoryList />
-                    </div> */}
             </div>
         </>
     );

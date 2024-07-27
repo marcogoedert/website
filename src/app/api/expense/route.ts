@@ -5,6 +5,18 @@ export async function GET(req: Request): Promise<Response> {
     try {
         const expenseService = await ExpenseService.getInstance();
         const expenses = await expenseService.getExpenses();
+
+        const searchParams = new URL(req.url).searchParams;
+        const bankAccount = searchParams.get('bankAccount');
+        if (bankAccount) {
+            const filteredExpenses = expenses.filter(
+                (expense) => expense.accountId === bankAccount
+            );
+            return new Response(JSON.stringify(filteredExpenses), {
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+        
         return new Response(JSON.stringify(expenses), {
             headers: { 'Content-Type': 'application/json' }
         });
@@ -28,15 +40,13 @@ export async function POST(request: Request) {
 
 // Update a expense
 export async function PATCH(req: Request): Promise<Response> {
-    
     const body = await req.json();
-    
+
     const expenseService = await ExpenseService.getInstance();
     const ok = await expenseService.updateExpense(body);
     if (ok) {
-        
         return new Response(undefined, { status: 204 });
     }
-    
+
     return new Response('Expense not found', { status: 404 });
 }

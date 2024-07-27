@@ -8,8 +8,17 @@ const nextConfig = {
     tags: ['expense']
 };
 
-export async function fetchExpenses(): Promise<Expense[]> {
-    const expenses = await get<Expense[]>(URL, nextConfig);
+interface FetchExpensesParams {
+    bankAccount: string | string[] | undefined;
+}
+
+export async function fetchExpenses(
+    { bankAccount }: FetchExpensesParams = {
+        bankAccount: undefined
+    }
+): Promise<Expense[]> {
+    const url = bankAccount ? `${URL}?bankAccount=${bankAccount}` : URL;
+    const expenses = await get<Expense[]>(url, nextConfig);
     if (!expenses) {
         return [];
     }
