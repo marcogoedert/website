@@ -7,15 +7,18 @@ import {
     PopoverContent,
     PopoverTrigger
 } from '@/components/ui/popover';
-import { EllipsisVertical } from 'lucide-react';
-import Icon from '@/ui/atoms/icons/Icon';
-import CategoriesDialog from '../Category/Dialog/CategoriesDialog';
+import { EllipsisVertical, Settings } from 'lucide-react';
+import Link from 'next/link';
 
 export default function HomeMenu(): JSX.Element {
     const [open, setOpen] = useState(false);
 
     const close = useCallback(() => {
         setOpen(false);
+    }, []);
+
+    const redirect = useCallback(() => {
+        window.location.href = '/settings';
     }, []);
 
     return (
@@ -37,29 +40,20 @@ export default function HomeMenu(): JSX.Element {
                 align='end'
                 className='w-[200px] p-0'
             >
-                <CategoriesDialog>
+                <Link href='/finance/settings'>
                     <Button
                         variant='outline'
+                        onClick={close}
                         className='w-full text-left justify-start items-center rounded-none'
                     >
-                        <Icon
-                            icon='SHAPES'
+                        <Settings
+                            strokeWidth={1}
+                            size={22}
                             className='mr-2'
                         />
-                        Manage categories
+                        Settings
                     </Button>
-                </CategoriesDialog>
-                <Button
-                    variant='outline'
-                    onClick={close}
-                    className='w-full text-left justify-start items-center rounded-none'
-                >
-                    <Icon
-                        icon='HOME'
-                        className='mr-2'
-                    />
-                    Settings
-                </Button>
+                </Link>
             </PopoverContent>
         </Popover>
     );

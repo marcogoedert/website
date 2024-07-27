@@ -8,7 +8,8 @@ import { format } from 'date-fns';
 import { Income } from '@/entities/Income';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import IncomeDialog from '../IncomeDialog';
-import { Plus } from 'lucide-react';
+import { ArrowRight, Plus } from 'lucide-react';
+import Link from 'next/link';
 
 interface IncomeListClientProps {
     initialValue: Income[];
@@ -67,6 +68,11 @@ export default function IncomeListClient({
     }, []);
 
     const recentIncomes = incomes.slice(0, maxItems);
+    const incomesThisMonth = incomes.filter(
+        (income) =>
+            new Date(income.date).getMonth() === new Date().getMonth() &&
+            new Date(income.date).getFullYear() === new Date().getFullYear()
+    );
     const rows =
         recentIncomes.length > 0 ? (
             recentIncomes.map((income) => (
@@ -114,15 +120,19 @@ export default function IncomeListClient({
                             Recent Incomes
                         </h3>
                         <p className='text-sm text-muted-foreground'>
-                            You got {incomes.length} transactions this month.
+                            You got {incomesThisMonth.length} incomes this month.
                         </p>
                     </div>
-                    <IncomeDialog
-                        callback={callback}
-                        categories={categories}
-                    >
-                        <Button variant='secondary'><Plus className='mr-1'/>Add new</Button>
-                    </IncomeDialog>
+                    <Link href='/finance/incomes'>
+                        <Button variant='secondary'>
+                            <ArrowRight
+                                className='mr-1'
+                                strokeWidth={1.5}
+                                size={22}
+                            />
+                            View
+                        </Button>
+                    </Link>
                 </div>
                 <div
                     id='rows-container'

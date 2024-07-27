@@ -8,7 +8,8 @@ import ExpenseDialog from '../ExpenseDialog';
 import { fetchExpenses } from '@/controller/finance/expenses.controller';
 import { Category } from '@/entities/Category';
 import { format } from 'date-fns';
-import { Plus } from 'lucide-react';
+import { ArrowRight, Plus } from 'lucide-react';
+import Link from 'next/link';
 
 interface ExpenseListClientProps {
     initialValue: Expense[];
@@ -48,7 +49,6 @@ export default function ExpenseListClient({
             );
         }) || []
     );
-    const recentExpenses = expenses.slice(0, maxItems);
 
     async function callback() {
         const newExpenses = await fetchExpenses();
@@ -66,7 +66,12 @@ export default function ExpenseListClient({
             )
         );
     }
-
+    const recentExpenses = expenses.slice(0, maxItems);
+    const expensesThisMonth = expenses.filter(
+        (expense) =>
+            new Date(expense.date).getMonth() === new Date().getMonth() &&
+            new Date(expense.date).getFullYear() === new Date().getFullYear()
+    );
     const rows =
         recentExpenses.length > 0 ? (
             recentExpenses.map((expense) => (
@@ -114,15 +119,19 @@ export default function ExpenseListClient({
                             Recent Expenses
                         </h3>
                         <p className='text-sm text-muted-foreground'>
-                            You made {expenses.length} expenses this month.
+                            You made {expensesThisMonth.length} expenses this month.
                         </p>
                     </div>
-                    <ExpenseDialog
-                        callback={callback}
-                        categories={categories}
-                    >
-                        <Button variant='secondary'><Plus className='mr-1'/>Add new</Button>
-                    </ExpenseDialog>
+                    <Link href='/finance/expenses'>
+                        <Button variant='secondary'>
+                            <ArrowRight
+                                className='mr-1'
+                                strokeWidth={1.5}
+                                size={22}
+                            />
+                            View
+                        </Button>
+                    </Link>
                 </div>
                 <div
                     id='rows-container'
