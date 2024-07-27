@@ -9,16 +9,14 @@ import {
 } from '@/components/ui/popover';
 import { EllipsisVertical, Settings } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 export default function HomeMenu(): JSX.Element {
     const [open, setOpen] = useState(false);
+    const searchParams = useSearchParams();
 
     const close = useCallback(() => {
         setOpen(false);
-    }, []);
-
-    const redirect = useCallback(() => {
-        window.location.href = '/settings';
     }, []);
 
     return (
@@ -40,7 +38,15 @@ export default function HomeMenu(): JSX.Element {
                 align='end'
                 className='w-[200px] p-0'
             >
-                <Link href='/finance/settings'>
+                <Link
+                    href={
+                        searchParams.size === 0
+                            ? '/finance/settings'
+                            : `/finance/settings?${new URLSearchParams(
+                                  searchParams
+                              )}`
+                    }
+                >
                     <Button
                         variant='outline'
                         onClick={close}
