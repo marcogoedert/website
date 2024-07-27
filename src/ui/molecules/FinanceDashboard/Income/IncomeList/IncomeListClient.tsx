@@ -141,7 +141,15 @@ export default function IncomeListClient({
                             month.
                         </p>
                     </div>
-                    <Link href='/finance/incomes'>
+                    <Link
+                        href={
+                            searchParams.size > 0
+                                ? `/finance/incomes?${new URLSearchParams(
+                                      searchParams
+                                  )}`
+                                : '/finance/incomes'
+                        }
+                    >
                         <Button variant='secondary'>
                             <ArrowRight
                                 className='mr-1'

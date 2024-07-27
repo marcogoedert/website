@@ -5,6 +5,8 @@ import { fetchExpenses } from '@/controller/finance/expenses.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import { NumericPanel } from '@/ui/molecules/FinanceDashboard/Panel/NumericPanel';
 import HomeMenu from '@/ui/molecules/FinanceDashboard/ActionMenu/HomeMenu';
+// import { fetchAccounts } from '@/controller/finance/account.controller';
+// import { Account } from '@/entities/Account';
 
 interface FinancePageProps {
     searchParams: { [key: string]: string | string[] | undefined };
@@ -13,12 +15,23 @@ interface FinancePageProps {
 export default async function FinancePage({
     searchParams
 }: FinancePageProps): Promise<JSX.Element> {
+    const bankAccountParam = searchParams['bankAccount'];
+
+    // const accounts = await fetchAccounts();
     const incomes = await fetchIncomes({
-        bankAccount: searchParams['bankAccount']
+        bankAccount: bankAccountParam
     });
     const expenses = await fetchExpenses({
-        bankAccount: searchParams['bankAccount']
+        bankAccount: bankAccountParam
     });
+
+    // const bankAccountId: string | null = Array.isArray(bankAccountParam)
+    //     ? bankAccountParam.length > 0
+    //         ? bankAccountParam[0]
+    //         : null
+    //     : bankAccountParam || null;
+    // const bankAccount = accounts.find((a) => a.id === bankAccountId);
+
     const totalIncome = incomes.reduce((acc, i) => acc + i.amount, 0);
     const totalExpense = expenses.reduce((acc, e) => acc + e.amount, 0);
 
@@ -26,7 +39,7 @@ export default async function FinancePage({
     return (
         <>
             <h2 className='text-3xl font-bold tracking-tight mb-4'>
-                Finance Dashboard 💸
+                Finance Dashboard 🪙
             </h2>
             <div className='flex items-center justify-between'>
                 <SelectAccount />

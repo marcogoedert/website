@@ -21,13 +21,13 @@ import { cn } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface SelectAccountClientProps {
-    initialValue: Account[];
+    list: Account[];
 }
 
 export default function SelectAccountClient({
-    initialValue
+    list
 }: SelectAccountClientProps): JSX.Element {
-    const [accounts, setAccounts] = useState<Account[]>(initialValue);
+    const [accounts, setAccounts] = useState<Account[]>(list);
     const [open, setOpen] = useState(false);
     const searchParams = useSearchParams();
     const [value, setValue] = useState(searchParams.get('bankAccount'));

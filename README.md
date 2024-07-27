@@ -1,21 +1,18 @@
 # Website
 
-## To-dos
+## Pages / Todos
 
-- [ ] Link incomes/expenses to bank account
-- [ ] Manage bank accounts
-- [ ] Manage budget (monthly?)
-  - [ ] Add budget on "home > numeric cards"
-- [ ] Segregate expenses by debit/credit
-- [ ] Show incomes/expenses by category
-- [ ] Show all debits (financing, installments)
-- [ ] Add ?
-
-### Pages
-
+- Home
+  - [x] Link incomes/expenses to bank account
 - Settings
   - Bank Accounts
+    - [ ] Manage bank accounts
   - Categories
 - Budget
+  - [ ] Manage budget (monthly?)
+  - [ ] Add budget on "home > numeric cards"
 - Incomes
+  - [ ] Show incomes/expenses by category
 - Expenses
+  - [ ] Segregate expenses by debit/credit
+  - [ ] Show all debits (financing, installments)

@@ -12,10 +12,11 @@ import {
     BreadcrumbSeparator
 } from '@/components/ui/breadcrumb';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export function BreadcrumbClient() {
     const pathname = usePathname();
+    const searchParams = useSearchParams();
 
     const paths = [
         { href: '/', label: 'Home' },
@@ -39,7 +40,17 @@ export function BreadcrumbClient() {
                         asChild
                         className='max-w-20 truncate md:max-w-none'
                     >
-                        <Link href={path.href}>{path.label}</Link>
+                        <Link
+                            href={
+                                index === 0 || searchParams.size === 0
+                                    ? path.href
+                                    : `${path.href}?${new URLSearchParams(
+                                          searchParams
+                                      )}`
+                            }
+                        >
+                            {path.label}
+                        </Link>
                     </BreadcrumbLink>
                 </BreadcrumbItem>
             );
