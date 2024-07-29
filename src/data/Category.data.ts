@@ -62,6 +62,6 @@
   {
     "id": "1721745790660",
     "name": "Restaurant",
-    "icon": "BIKE"
+    "icon": "UTENSILS"
   }
 ]

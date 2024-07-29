@@ -51,14 +51,11 @@ import {
     CommandItem,
     CommandList
 } from '@/components/ui/command';
+import { IconFormField, iconSchema } from '../../Dialog/IconForm';
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
-    icon: z
-        .string()
-        .refine((iconName) => Object.keys(IconEnum).includes(iconName), {
-            message: 'Invalid Icon Name'
-        })
+    icon: iconSchema
 });
 interface CategoryDialogProps {
     category?: Category;
@@ -177,101 +174,8 @@ export default function CategoryDialog({
                                     </FormItem>
                                 )}
                             />
-
                             {/* Category Icon */}
-                            <FormField
-                                control={form.control}
-                                name='icon'
-                                render={({ field }) => (
-                                    <FormItem className='flex flex-col'>
-                                        <FormLabel>Icon</FormLabel>
-                                        <Popover>
-                                            <PopoverTrigger asChild>
-                                                <FormControl>
-                                                    <Button
-                                                        variant='outline'
-                                                        role='combobox'
-                                                        className={cn(
-                                                            'w-[200px] justify-between',
-                                                            !field.value &&
-                                                                'text-muted-foreground'
-                                                        )}
-                                                    >
-                                                        {field.value ? (
-                                                            <>
-                                                                <Icon
-                                                                    icon={
-                                                                        field.value as IconKey
-                                                                    }
-                                                                />
-                                                                {
-                                                                    IconEnum[
-                                                                        field.value as IconKey
-                                                                    ]
-                                                                }
-                                                            </>
-                                                        ) : (
-                                                            'Select an icon to display'
-                                                        )}
-                                                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                                                    </Button>
-                                                </FormControl>
-                                            </PopoverTrigger>
-                                            <PopoverContent className='w-[200px] p-0'>
-                                                <Command>
-                                                    <CommandInput placeholder='Search icons...' />
-                                                    <CommandEmpty>
-                                                        No icons found.
-                                                    </CommandEmpty>
-                                                    <CommandGroup>
-                                                        <CommandList>
-                                                            {Object.keys(
-                                                                IconEnum
-                                                            ).map((icon) => (
-                                                                <CommandItem
-                                                                    value={icon}
-                                                                    key={icon}
-                                                                    onSelect={() => {
-                                                                        form.setValue(
-                                                                            'icon',
-                                                                            icon
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    <Check
-                                                                        className={cn(
-                                                                            'mr-2 h-4 w-4',
-                                                                            icon ===
-                                                                                field.value
-                                                                                ? 'opacity-100'
-                                                                                : 'opacity-0'
-                                                                        )}
-                                                                    />
-                                                                    <Icon
-                                                                        icon={
-                                                                            icon as IconKey
-                                                                        }
-                                                                        className='mr-2'
-                                                                    />
-                                                                    {
-                                                                        IconEnum[
-                                                                            icon as IconKey
-                                                                        ]
-                                                                    }
-                                                                </CommandItem>
-                                                            ))}
-                                                        </CommandList>
-                                                    </CommandGroup>
-                                                </Command>
-                                            </PopoverContent>
-                                        </Popover>
-                                        <FormDescription>
-                                            The category icon.
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                            <IconFormField form={form} />
                             {/* Form Body End */}
                         </div>
                         <DialogFooter>

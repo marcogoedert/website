@@ -6,8 +6,9 @@
   - [x] Link incomes/expenses to bank account
 - Settings
   - Bank Accounts
-    - [ ] Manage bank accounts
+    - [x] Manage bank accounts
   - Categories
+    - [x] Manage categories
 - Budget
   - [ ] Manage budget (monthly?)
   - [ ] Add budget on "home > numeric cards"

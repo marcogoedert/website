@@ -19,13 +19,6 @@ import {
     FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import {
     addAccount,
@@ -33,8 +26,6 @@ import {
     updateAccount
 } from '@/controller/finance/account.controller';
 import { Account } from '@/entities/Account';
-import { IconEnum, IconKey } from '@/entities/Icon';
-import { cn } from '@/lib/utils';
 import Icon from '@/ui/atoms/icons/Icon';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useState } from 'react';
@@ -46,6 +37,7 @@ import {
     iconSchemaDefaultValue
 } from '../Dialog/IconForm';
 import { SwitchFormField } from '../Dialog/SwitchForm';
+import { IconKey } from '@/entities/Icon';
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
@@ -88,8 +80,8 @@ export default function AccountDialog({
                 String(Date.now()),
                 values.name,
                 values.icon as IconKey,
-                values.enableWallet ? `wallet-${Date.now()}` : undefined,
-                values.enableCreditCard ? `credit-${Date.now()}` : undefined
+                values.enableWallet ? `wallet-${Date.now()}` : '',
+                values.enableCreditCard ? `credit-${Date.now()}` : ''
             );
         } else {
             const hasWallet = !!account.walletId;
@@ -99,12 +91,12 @@ export default function AccountDialog({
                 ? hasWallet
                     ? account.walletId
                     : `wallet-${Date.now()}`
-                : undefined;
+                : '';
             const creditCardId = values.enableCreditCard
                 ? hasCreditCard
                     ? account.creditCardId
                     : `credit-${Date.now()}`
-                : undefined;
+                : '';
             newAccount = new Account(
                 account.id,
                 values.name,
