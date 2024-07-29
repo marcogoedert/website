@@ -1,17 +1,20 @@
-'use server';
-
 import { Suspense } from 'react';
 import CategoryListClient from './CategoryListClient';
 import { fetchCategories } from '@/controller/finance/category.controller';
+import { Category } from '@/entities/Category';
 
-export default async function CategoryListServer(): Promise<JSX.Element> {
-    const categories = await fetchCategories();
+interface CategoryListServerProps {
+    list?: Category[];
+}
+
+export default async function CategoryListServer({
+    list
+}: CategoryListServerProps): Promise<JSX.Element> {
+    const categories = list || (await fetchCategories());
 
     return (
-        <div className='grid grid-cols-1 gap-4'>
-            <Suspense fallback={<div>Loading...</div>}>
-                <CategoryListClient initialValue={categories} />
-            </Suspense>
-        </div>
+        <Suspense fallback={<div>Loading...</div>}>
+            <CategoryListClient list={categories} />
+        </Suspense>
     );
 }

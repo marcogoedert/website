@@ -1,23 +1,29 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { fetchCategories } from '@/controller/finance/category.controller';
 import { Category } from '@/entities/Category';
-import { IconKey } from '@/entities/Icon';
 import Icon from '@/ui/atoms/icons/Icon';
-
 import { useCallback, useState } from 'react';
-import PanelContainer from '../../PanelContainer';
 import CategoryDialog from '../Dialog/CategoryDialog';
+import { Button } from '@/components/ui/button';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList
+} from '@/components/ui/command';
+import { IconKey } from '@/entities/Icon';
 
 interface CategoryListClientProps {
-    initialValue: Category[];
+    list: Category[];
 }
 
 export default function CategoryListClient({
-    initialValue
+    list
 }: CategoryListClientProps): JSX.Element {
-    const [categories, setCategories] = useState<Category[]>(initialValue);
+    const [categories, setCategories] = useState<Category[]>(list);
 
     const callback = useCallback(async () => {
         const newCategories = await fetchCategories();
@@ -25,39 +31,52 @@ export default function CategoryListClient({
     }, [categories]);
 
     return (
-        <PanelContainer title='Categories' subtitle={`You have ${categories.length} unique categories to label your incomes and expenses.`}>
-            <div className='flex flex-wrap gap-2'>
+        <>
+            <div className='w-full flex'>
                 <CategoryDialog callback={callback}>
-                    <Badge className='select-none cursor-pointer'>
+                    <Button
+                        className='ml-auto'
+                        variant='secondary'
+                    >
                         <Icon
                             icon='PLUS'
-                            iconSettings={{ size: 20 }}
                             className='mr-2'
-                        />
-                        Add Category
-                    </Badge>
+                        />{' '}
+                        Add new
+                    </Button>
                 </CategoryDialog>
-                {categories
-                    .map((category) => (
-                        <CategoryDialog
-                            key={category.id}
-                            category={category}
-                            callback={callback}
-                        >
-                            <Badge
-                                variant='secondary'
-                                className='select-none cursor-pointer'
-                            >
-                                <Icon
-                                    icon={category.icon as IconKey}
-                                    iconSettings={{ size: 20 }}
-                                    className='mr-2'
-                                />
-                                {category.name}
-                            </Badge>
-                        </CategoryDialog>
-                    ))}
             </div>
-        </PanelContainer>
+            <Command>
+                <CommandInput placeholder='Search categories...' />
+                <CommandEmpty>No categories found.</CommandEmpty>
+                <CommandGroup>
+                    <CommandList className='gap-1'>
+                        {categories
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map((category) => (
+                                <CommandItem
+                                    key={category.id}
+                                    value={`${category.id} ${category.name}`}
+                                    className='aria-selected:bg-primary-foreground'
+                                >
+                                    <CategoryDialog
+                                        category={category}
+                                        callback={callback}
+                                    >
+                                        <button className='w-full flex items-center p-1'>
+                                            <Icon
+                                                icon={category.icon as IconKey}
+                                                iconSettings={{ size: 20 }}
+                                                className='mr-2'
+                                            />
+                                            {category.name}
+                                        </button>
+                                    </CategoryDialog>
+                                </CommandItem>
+                            ))}
+                    </CommandList>
+                </CommandGroup>
+            </Command>
+        </>
     );
 }

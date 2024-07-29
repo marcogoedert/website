@@ -15,7 +15,6 @@ import {
 import Icon from '@/ui/atoms/icons/Icon';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
 
 interface AccountListClientProps {
     list?: Account[];
@@ -61,7 +60,6 @@ export function AccountListClient({
                                     className='aria-selected:bg-primary-foreground'
                                 >
                                     <AccountDialog
-                                        key={index}
                                         account={account}
                                         callback={callback}
                                     >
