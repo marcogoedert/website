@@ -3,6 +3,7 @@ import {
     Bike,
     Bone,
     Car,
+    Check,
     CreditCard,
     Cross,
     Drama,
@@ -18,7 +19,8 @@ import {
     ShoppingBag,
     ShoppingBasket,
     Sprout,
-    Wallet
+    Wallet,
+    X
 } from 'lucide-react';
 
 function getIcon(iconName: IconKey) {
@@ -29,6 +31,8 @@ function getIcon(iconName: IconKey) {
             return Bone;
         case 'CAR':
             return Car;
+        case 'CHECK':
+            return Check;
         case 'CREDIT_CARD':
             return CreditCard;
         case 'DRAMA':
@@ -62,6 +66,8 @@ function getIcon(iconName: IconKey) {
             return Sprout;
         case 'WALLET':
             return Wallet
+        case 'X':
+            return X;
     }
 }
 

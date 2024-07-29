@@ -2,6 +2,7 @@ export enum IconEnum {
     BIKE = 'bike',
     BONE = 'bone',
     CAR = 'car',
+    CHECK = 'check',
     CREDIT_CARD = 'credit-card',
     DRAMA = 'drama',
     HAND_HEART = 'hand-heart',
@@ -18,6 +19,7 @@ export enum IconEnum {
     SHOPPING_BASKET = 'shopping-basket',
     SPROUT = 'sprout',
     WALLET = 'wallet',
+    X = 'x'
 }
 
 export type IconKey = keyof typeof IconEnum;

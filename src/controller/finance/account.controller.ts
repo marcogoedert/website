@@ -18,7 +18,13 @@ export async function fetchAccountById(id: string): Promise<Account | null> {
 
 export async function addAccount(account: string): Promise<boolean> {
     const json = JSON.parse(account) as Account;
-    const body = new Account(json.id, json.name, json.icon);
+    const body = new Account(
+        json.id,
+        json.name,
+        json.icon,
+        json.walletId,
+        json.creditCardId
+    );
     return await post<Account>(URL, body, nextConfig);
 }
 
@@ -28,6 +34,12 @@ export async function deleteAccount(id: string): Promise<boolean> {
 
 export async function updateAccount(account: string): Promise<boolean> {
     const json = JSON.parse(account) as Account;
-    const body = new Account(json.id, json.name, json.icon);
+    const body = new Account(
+        json.id,
+        json.name,
+        json.icon,
+        json.walletId,
+        json.creditCardId
+    );
     return await patch<Account>(URL, body, nextConfig);
 }

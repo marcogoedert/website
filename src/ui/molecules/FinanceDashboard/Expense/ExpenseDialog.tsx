@@ -305,7 +305,7 @@ export default function ExpenseDialog({
                                             </PopoverTrigger>
                                             <PopoverContent align='start' className='p-0 w-[240px]'>
                                                 <Command>
-                                                    <CommandInput placeholder='Search icons...' />
+                                                    <CommandInput placeholder='Search categories...' />
                                                     <CommandEmpty>
                                                         No categories found.
                                                     </CommandEmpty>

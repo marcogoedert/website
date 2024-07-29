@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 export async function PATCH(req: Request): Promise<Response> {
     
     const body = await req.json();
-    
+    console.log('🚀 ~ file: route.ts ~ line 116 ~ PATCH ~ body', body);
     const accountService = await AccountService.getInstance();
     const ok = await accountService.updateAccount(body);
     if (ok) {

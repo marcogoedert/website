@@ -12,6 +12,7 @@ import {
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -36,13 +37,21 @@ import { IconEnum, IconKey } from '@/entities/Icon';
 import { cn } from '@/lib/utils';
 import Icon from '@/ui/atoms/icons/Icon';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import {
+    IconFormField,
+    iconSchema,
+    iconSchemaDefaultValue
+} from '../Dialog/IconForm';
+import { SwitchFormField } from '../Dialog/SwitchForm';
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
-    icon: z.string()
+    icon: iconSchema,
+    enableWallet: z.boolean().default(false).optional(),
+    enableCreditCard: z.boolean().default(false).optional()
 });
 
 interface AccountDialogProps extends ButtonProps {
@@ -63,21 +72,48 @@ export default function AccountDialog({
         defaultValues: account
             ? {
                   name: account.name,
-                  icon: account.icon
+                  icon: account.icon,
+                  enableWallet: !!account.walletId,
+                  enableCreditCard: !!account.creditCardId
               }
             : undefined
     });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        const newAccount = new Account(
-            account?.id || String(Date.now()),
-            values.name,
-            values.icon as IconKey,
-            undefined,
-            undefined
-        );
+    const onSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
+        let newAccount: Account;
 
-        const method = account ? 'PATCH' : 'POST';
+        if (!account) {
+            console.log('Creating new account', values);
+            newAccount = new Account(
+                String(Date.now()),
+                values.name,
+                values.icon as IconKey,
+                values.enableWallet ? `wallet-${Date.now()}` : undefined,
+                values.enableCreditCard ? `credit-${Date.now()}` : undefined
+            );
+        } else {
+            const hasWallet = !!account.walletId;
+            const hasCreditCard = !!account.creditCardId;
+
+            const walletId = values.enableWallet
+                ? hasWallet
+                    ? account.walletId
+                    : `wallet-${Date.now()}`
+                : undefined;
+            const creditCardId = values.enableCreditCard
+                ? hasCreditCard
+                    ? account.creditCardId
+                    : `credit-${Date.now()}`
+                : undefined;
+            newAccount = new Account(
+                account.id,
+                values.name,
+                values.icon as IconKey,
+                walletId,
+                creditCardId
+            );
+        }
+
         const body = JSON.stringify(newAccount);
 
         let ok = false;
@@ -88,21 +124,36 @@ export default function AccountDialog({
         }
 
         if (ok) {
-            
             await callback();
         } else {
+            const method = account ? 'PATCH' : 'POST';
             console.error(`🚨 ~ onSubmit ~ Account ${method} Failed`);
         }
-        form.reset();
         setOpen(false);
-    }
+    }, []);
 
     async function onDelete() {
         if (!account) return;
         await deleteAccount(account.id);
-        form.reset();
         await callback();
     }
+
+    useEffect(() => {
+        if (form.formState.isSubmitSuccessful) {
+            console.log('[useEffect] formState:', form.formState);
+            console.log(
+                '[useEffect] isSubmitSuccessful:',
+                form.formState.isSubmitSuccessful
+            );
+            console.log('[useEffect] account:', account);
+            form.reset({
+                name: account?.name || '',
+                icon: account?.icon || 'SHAPES',
+                enableWallet: !!account?.walletId,
+                enableCreditCard: !!account?.creditCardId
+            });
+        }
+    }, [form.formState, form.reset, account]);
 
     return (
         <Dialog
@@ -114,23 +165,12 @@ export default function AccountDialog({
                 setOpen((prev) => !prev);
             }}
         >
-            <DialogTrigger asChild>
-                {props.children}
-                {/* <Button
-                    {...props}
-                    className={cn(
-                        'inline-flex gap-2 w-full items-center justify-start ',
-                        props.className
-                    )}
-                >
-                    <Icon icon={account?.icon || 'SHAPES'} />
-                    {accountName}
-                </Button> */}
-            </DialogTrigger>
+            <DialogTrigger asChild>{props.children}</DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle className='inline-flex gap-2 items-center'>
-                        <Icon icon={account?.icon || 'SHAPES'} /> {accountName}
+                        <Icon icon={account?.icon || iconSchemaDefaultValue} />{' '}
+                        {accountName}
                     </DialogTitle>
                     <DialogDescription>
                         Make changes to the account &quot;{accountName}
@@ -144,7 +184,7 @@ export default function AccountDialog({
                         className='space-y-8'
                     >
                         {/* Form Body Start */}
-                        <div className='grid gap-4 py-4'>
+                        <div className='grid gap-4'>
                             {/* Account Name */}
                             <FormField
                                 control={form.control}
@@ -158,49 +198,26 @@ export default function AccountDialog({
                                                 {...field}
                                             />
                                         </FormControl>
+                                        <FormDescription>
+                                            The name of the bank account
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                             {/* Account Icon */}
-                            <FormField
-                                control={form.control}
-                                name='icon'
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Icon</FormLabel>
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            defaultValue={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder='Select an icon to display' />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent className='grid grid-cols-3'>
-                                                {Object.keys(IconEnum).map(
-                                                    (icon) => (
-                                                        <SelectItem
-                                                            key={icon}
-                                                            value={icon}
-                                                            className='col-span-1'
-                                                        >
-                                                            <span className='inline-flex w-full gap-2 items-center'>
-                                                                <Icon
-                                                                    icon={
-                                                                        icon as IconKey
-                                                                    }
-                                                                />
-                                                            </span>
-                                                        </SelectItem>
-                                                    )
-                                                )}
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                            <IconFormField form={form} />
+                            <SwitchFormField
+                                form={form}
+                                name='enableWallet'
+                                title='Wallet'
+                                description='Enable wallet for this bank account'
+                            />
+                            <SwitchFormField
+                                form={form}
+                                name='enableCreditCard'
+                                title='Credit Card'
+                                description='Enable credit card for this bank account'
                             />
                             {/* Form Body End */}
                         </div>

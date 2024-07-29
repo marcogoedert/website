@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const rootPath = '/finance/settings';
 
@@ -18,12 +18,20 @@ interface SideNavigationSettingsProps {}
 
 export function SideNavigationSettings({}: SideNavigationSettingsProps): JSX.Element {
     const pathname = usePathname();
+    const searchParams = useSearchParams();
+
     return (
         <>
             {items.map((item, index) => (
                 <Link
                     key={item.title}
-                    href={item.href}
+                    href={
+                        searchParams.size === 0
+                            ? item.href
+                            : `${item.href}?${new URLSearchParams(
+                                  searchParams
+                              )}`
+                    }
                     className={
                         pathname === item.href
                             ? cn(linkClass, 'bg-muted hover:bg-muted')

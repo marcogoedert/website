@@ -5,15 +5,15 @@ import { IconKey } from './Icon';
 export class Account extends Entity {
     public readonly name: string;
     public readonly icon: IconKey;
-    public readonly walletId?: string;
-    public readonly creditCardId?: string;
+    public readonly walletId: string;
+    public readonly creditCardId: string;
 
     constructor(
         id: string,
         name: string,
         icon: IconKey = 'WALLET',
-        walletId?: string,
-        creditCardId?: string
+        walletId: string = '',
+        creditCardId: string = ''
     ) {
         super(id);
         this.name = name;
