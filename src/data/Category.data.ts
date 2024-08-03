@@ -62,6 +62,11 @@
   {
     "id": "1721745790660",
     "name": "Restaurant",
-    "icon": "UTENSILS"
+    "icon": "UTENSILS_CROSSED"
+  },
+  {
+    "id": "1722263283602",
+    "name": "Girlfriend",
+    "icon": "HEART"
   }
 ]

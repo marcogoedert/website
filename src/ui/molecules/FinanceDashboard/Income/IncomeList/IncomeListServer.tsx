@@ -8,22 +8,23 @@ import { Income } from '@/entities/Income';
 
 interface IncomeListServerProps {
     list?: Income[];
+    searchable?: boolean;
 }
 
 export default async function IncomeListServer({
-    list
+    list,
+    searchable = false
 }: IncomeListServerProps): Promise<JSX.Element> {
     const incomes = list || (await fetchIncomes());
     const categories = await fetchCategories();
 
     return (
-        <div className='grid grid-cols-1 gap-4 h-full'>
-            <Suspense fallback={<div>Loading incomes...</div>}>
-                <IncomeListClient
-                    list={incomes}
-                    categories={categories}
-                />
-            </Suspense>
-        </div>
+        <Suspense fallback={<div>Loading incomes...</div>}>
+            <IncomeListClient
+                list={incomes}
+                categories={categories}
+                searchable={searchable}
+            />
+        </Suspense>
     );
 }

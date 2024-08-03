@@ -7,11 +7,22 @@ import HomeMenu from '@/ui/molecules/FinanceDashboard/ActionMenu/HomeMenu';
 import {
     Panel,
     PanelContent,
+    PanelDescription,
     PanelHeader,
     PanelTitle
 } from '@/ui/molecules/FinanceDashboard/Panel';
 import Icon from '@/ui/atoms/icons/Icon';
 import { IconKey } from '@/entities/Icon';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
+import {
+    PageDescription,
+    PageHeader,
+    PageTitle
+} from '@/ui/organisms/FinanceDashboard/PageHeader';
+
+const MAX_ITEMS = 5;
 
 interface FinancePageProps {
     searchParams: { [key: string]: string | string[] | undefined };
@@ -48,11 +59,24 @@ export default async function FinancePage({
         { title: 'Total Expenses', value: -totalExpense, icon: 'TRENDING_DOWN' }
     ];
 
+    const incomesThisMonth = incomes.filter(
+        (income) =>
+            new Date(income.date).getMonth() === new Date().getMonth() &&
+            new Date(income.date).getFullYear() === new Date().getFullYear()
+    );
+
+    const recentIncomes = incomes.slice(0, MAX_ITEMS);
+    const recentExpenses = expenses.slice(0, MAX_ITEMS);
+
     return (
         <>
-            <h2 className='text-3xl font-bold tracking-tight mb-4'>
-                Finance Dashboard 🪙
-            </h2>
+            <PageHeader>
+                <PageTitle>Finance Dashboard 🪙</PageTitle>
+                <PageDescription>
+                    Keep track of your income and expenses. Visualize your
+                    financial health. Plan your future.
+                </PageDescription>
+            </PageHeader>
             <div className='flex items-center justify-between'>
                 <SelectAccount />
                 <HomeMenu />
@@ -61,7 +85,7 @@ export default async function FinancePage({
                 {numericValues.map(({ title, value, icon }, index) => (
                     <div
                         key={index}
-                        className='col-span-4'
+                        className='col-span-12 sm:col-span-4'
                     >
                         <Panel>
                             <PanelHeader className='flex-row items-center justify-between'>
@@ -83,10 +107,42 @@ export default async function FinancePage({
                     </div>
                 ))}
                 <div className={gridContainerClass}>
-                    <IncomeList list={incomes} />
+                    <Panel>
+                        <div className='flex justify-between items-center'>
+                            <PanelHeader>
+                                <PanelTitle>Recent Incomes</PanelTitle>
+                                <PanelDescription>
+                                    You got {incomesThisMonth.length} incomes
+                                    this month
+                                </PanelDescription>
+                            </PanelHeader>
+                            <Link
+                                href={
+                                    bankAccountParam
+                                        ? `/finance/incomes?bankAccount=${bankAccountParam}`
+                                        : '/finance/incomes'
+                                }
+                            >
+                                <Button
+                                    variant='secondary'
+                                    className='mx-6'
+                                >
+                                    <ArrowRight
+                                        className='mr-1'
+                                        strokeWidth={1.5}
+                                        size={22}
+                                    />
+                                    View
+                                </Button>
+                            </Link>
+                        </div>
+                        <div className='grid grid-cols-1 gap-4 h-full'>
+                            <IncomeList list={recentIncomes} />
+                        </div>
+                    </Panel>
                 </div>
                 <div className={gridContainerClass}>
-                    <ExpenseList list={expenses} />
+                    <ExpenseList list={recentExpenses} />
                 </div>
             </div>
         </>

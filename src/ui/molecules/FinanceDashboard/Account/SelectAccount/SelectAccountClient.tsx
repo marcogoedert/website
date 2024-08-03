@@ -18,7 +18,7 @@ import {
     CommandList
 } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 interface SelectAccountClientProps {
     list: Account[];
@@ -32,6 +32,7 @@ export default function SelectAccountClient({
     const searchParams = useSearchParams();
     const [value, setValue] = useState(searchParams.get('bankAccount'));
     const router = useRouter();
+    const pathname = usePathname();
 
     return (
         <>
@@ -49,7 +50,7 @@ export default function SelectAccountClient({
                         {value
                             ? accounts.find((account) => account.id === value)
                                   ?.name
-                            : 'Select bank account'}
+                            : 'All bank accounts'}
 
                         <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                     </Button>
@@ -66,11 +67,11 @@ export default function SelectAccountClient({
                                         onSelect={(selectedValue) => {
                                             if (selectedValue === value) {
                                                 setValue('');
-                                                router.push('/finance');
+                                                router.push(pathname);
                                             } else {
                                                 setValue(selectedValue);
                                                 router.push(
-                                                    `/finance?bankAccount=${selectedValue}`
+                                                    `${pathname}?bankAccount=${selectedValue}`
                                                 );
                                             }
                                             setOpen(false);

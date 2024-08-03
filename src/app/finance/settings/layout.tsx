@@ -1,6 +1,10 @@
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { SideNavigationSettings } from '@/ui/molecules/FinanceDashboard/Settings/SideNavigationClient';
+import {
+    PageDescription,
+    PageTitle
+} from '@/ui/organisms/FinanceDashboard/PageHeader';
 import Link from 'next/link';
 
 interface SettingsLayoutProps {
@@ -24,12 +28,10 @@ export default function SettingsLayout({
         <>
             <div className='flex flex-col'>
                 <div className='space-y-0.5'>
-                    <h2 className='text-3xl font-bold tracking-tight'>
-                        Settings
-                    </h2>
-                    <p className='text-muted-foreground'>
+                    <PageTitle>Settings</PageTitle>
+                    <PageDescription className='text-muted-foreground'>
                         Manage your account settings.
-                    </p>
+                    </PageDescription>
                 </div>
                 <Separator className='my-6' />
                 <div className='flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>

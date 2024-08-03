@@ -72,9 +72,7 @@ export function AccountListClient({
                                                     <p className='text-sm font-medium leading-none'>
                                                         {account.name}
                                                     </p>
-                                                    <p className='text-sm text-muted-foreground'>
-                                                        ID: {account.id}
-                                                    </p>
+                                                    
                                                 </div>
                                             </div>
                                             <div className='hidden sm:flex items-center justify-end gap-2 flex-wrap'>
