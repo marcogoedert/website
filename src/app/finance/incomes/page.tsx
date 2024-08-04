@@ -1,19 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { fetchCategories } from '@/controller/finance/category.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
-import { IconKey } from '@/entities/Icon';
 import { getIncomeSideNavItems, getIncomeStats } from '@/lib/finance/income';
 import Icon from '@/ui/atoms/icons/Icon';
 import SelectAccount from '@/ui/molecules/FinanceDashboard/Account/SelectAccount';
 import HomeMenu from '@/ui/molecules/FinanceDashboard/ActionMenu/HomeMenu';
 import { AddIncome } from '@/ui/molecules/FinanceDashboard/Income/AddIncome';
 import IncomeList from '@/ui/molecules/FinanceDashboard/Income/IncomeList';
-import {
-    Panel,
-    PanelContent,
-    PanelHeader,
-    PanelTitle
-} from '@/ui/molecules/FinanceDashboard/Panel';
 import {
     PageDescription,
     PageHeader,
@@ -22,14 +15,12 @@ import {
 } from '@/ui/organisms/FinanceDashboard/PageHeader';
 import {
     SideNavigation,
-    SideNavigationItem,
-    SideNavigationProps
+    SideNavigationItem
 } from '@/ui/organisms/FinanceDashboard/SideNavigation';
 import {
     Statistics,
     StatsPanels
 } from '@/ui/organisms/FinanceDashboard/Statistics/Statistics';
-import { format } from 'date-fns';
 
 interface IncomesPageProps {
     searchParams: { [key: string]: string | string[] | undefined };

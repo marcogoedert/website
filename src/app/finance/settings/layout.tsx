@@ -20,7 +20,6 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({
     children
 }: SettingsLayoutProps): JSX.Element {
-    console.log('[Layout] items:', items);
     return (
         <>
             <div className='flex flex-col'>

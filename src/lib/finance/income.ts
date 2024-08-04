@@ -69,7 +69,7 @@ export function getIncomeStats(incomes: Income[]): Statistics[] {
 
             if (incomeDate.getFullYear() !== thisYear) {
                 // Past years
-                const year = `Total ${incomeDate.getFullYear()}`;
+                const year = `Year ${incomeDate.getFullYear()}`;
                 const pastYears = acc.find((stat) => stat.title === year);
                 if (pastYears) {
                     pastYears.value += income.amount;

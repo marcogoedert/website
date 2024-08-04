@@ -15,7 +15,6 @@ import {
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogOverlay,
     DialogPortal,
     DialogTitle,
     DialogTrigger
@@ -49,14 +48,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { dateSchema, dateSchemaDefaultValue } from '../Dialog/DateForm';
+import { findIconByCategory } from '@/lib/finance/category';
+
+const MIN_DATE = new Date('1998-02-11');
+const MAX_DATE = new Date('2038-02-11');
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
     amount: z.coerce.number().min(0).max(1000000),
-    date: z.coerce.date(),
+    date: dateSchema,
     categoryId: z.string().min(1).max(50)
 });
 
@@ -88,7 +92,7 @@ export default function IncomeDialog({
             amount: virtualIncome?.amount || 0,
             date: virtualIncome?.date
                 ? new Date(virtualIncome.date)
-                : new Date(Date.now()),
+                : dateSchemaDefaultValue,
             categoryId: virtualIncome?.categoryId || ''
         }
     });
@@ -196,15 +200,10 @@ export default function IncomeDialog({
                     <DialogHeader>
                         <DialogTitle className='inline-flex gap-2 items-center'>
                             <Icon
-                                icon={
-                                    income?.categoryId
-                                        ? categories.find(
-                                              (category) =>
-                                                  category.id ===
-                                                  income.categoryId
-                                          )!.icon
-                                        : 'SHAPES'
-                                }
+                                icon={findIconByCategory(
+                                    categories,
+                                    virtualIncome?.categoryId
+                                )}
                             />{' '}
                             {virtualIncome?.name || 'New Income'}
                         </DialogTitle>
@@ -287,7 +286,7 @@ export default function IncomeDialog({
                                                             {field.value ? (
                                                                 format(
                                                                     field.value,
-                                                                    'eeee, d LLL y'
+                                                                    'd LLL y, eeee'
                                                                 )
                                                             ) : (
                                                                 <span>
@@ -305,17 +304,36 @@ export default function IncomeDialog({
                                                     <Calendar
                                                         mode='single'
                                                         selected={field.value}
+                                                        defaultMonth={
+                                                            field.value
+                                                        }
                                                         onSelect={
                                                             field.onChange
                                                         }
                                                         disabled={(date) =>
-                                                            date > new Date() ||
-                                                            date <
-                                                                new Date(
-                                                                    '1900-01-01'
-                                                                )
+                                                            date > MAX_DATE ||
+                                                            date < MIN_DATE
                                                         }
                                                         initialFocus
+                                                        captionLayout='dropdown-buttons'
+                                                        fromYear={MIN_DATE.getFullYear()}
+                                                        toYear={MAX_DATE.getFullYear()}
+                                                        fromMonth={MIN_DATE}
+                                                        toMonth={MAX_DATE}
+                                                        labels={{
+                                                            labelMonthDropdown:
+                                                                () => '',
+                                                            labelYearDropdown:
+                                                                () => ''
+                                                        }}
+                                                        classNames={{
+                                                            caption_dropdowns:
+                                                                'flex gap-1',
+                                                            caption_label:
+                                                                'hidden',
+                                                            dropdown:
+                                                                'text-center border'
+                                                        }}
                                                     />
                                                 </PopoverContent>
                                             </Popover>

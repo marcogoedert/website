@@ -75,7 +75,6 @@ export default function AccountDialog({
         let newAccount: Account;
 
         if (!account) {
-            console.log('Creating new account', values);
             newAccount = new Account(
                 String(Date.now()),
                 values.name,
@@ -132,12 +131,6 @@ export default function AccountDialog({
 
     useEffect(() => {
         if (form.formState.isSubmitSuccessful) {
-            console.log('[useEffect] formState:', form.formState);
-            console.log(
-                '[useEffect] isSubmitSuccessful:',
-                form.formState.isSubmitSuccessful
-            );
-            console.log('[useEffect] account:', account);
             form.reset({
                 name: account?.name || '',
                 icon: account?.icon || 'SHAPES',
