@@ -1,13 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import Icon from '@/ui/atoms/icons/Icon';
 import { Category } from '@/entities/Category';
 import { format } from 'date-fns';
 import { Income } from '@/entities/Income';
-import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import IncomeDialog from '../IncomeDialog';
-import { useSearchParams } from 'next/navigation';
 import {
     Command,
     CommandEmpty,
@@ -27,15 +25,6 @@ import {
 } from '../../List';
 import { formatDate } from '@/lib/format';
 import { useIncomes } from '@/hooks/finance/use-incomes';
-import { AddIncome } from '../AddIncome';
-import { Button } from '@/components/ui/button';
-import {
-    ContextMenu,
-    ContextMenuContent,
-    ContextMenuItem,
-    ContextMenuShortcut,
-    ContextMenuTrigger
-} from '@/components/ui/context-menu';
 
 type GroupedItems = { [key: string]: Income[] };
 
@@ -132,7 +121,10 @@ export default function IncomeListClient({
                     key={key}
                     heading={key}
                 >
-                    <div id={key} className='scroll-m-36' />
+                    <div
+                        id={key}
+                        className='scroll-m-36'
+                    />
                     {getList(key, values)}
                 </CommandGroup>
             );
