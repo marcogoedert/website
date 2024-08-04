@@ -26,6 +26,9 @@ import {
     ListItemTitle
 } from '../../List';
 import { formatDate } from '@/lib/format';
+import { useIncomes } from '@/hooks/finance/use-incomes';
+import { AddIncome } from '../AddIncome';
+import { Button } from '@/components/ui/button';
 
 type GroupedItems = { [key: string]: Income[] };
 
@@ -53,53 +56,10 @@ export default function IncomeListClient({
     list,
     categories,
     searchable = false,
-    groupBy
+    groupBy,
+    maxItems
 }: IncomeListClientProps): JSX.Element {
-    const searchParams = useSearchParams();
-    const [bankAccount, setBankAccount] = useState<string>(
-        searchParams.get('bankAccount') || ''
-    );
-
-    const [incomes, setIncomes] = useState<Income[]>(
-        list.map((income) => {
-            return new Income(
-                income.id,
-                income.accountId,
-                income.name,
-                income.amount,
-                new Date(income.date),
-                income.categoryId
-            );
-        }) || []
-    );
-
-    const callback = useCallback(async () => {
-        const newIncomes = await fetchIncomes({ bankAccount });
-        setIncomes(
-            newIncomes.map(
-                (income) =>
-                    new Income(
-                        income.id,
-                        income.accountId,
-                        income.name,
-                        income.amount,
-                        new Date(income.date),
-                        income.categoryId
-                    )
-            )
-        );
-    }, [bankAccount]);
-
-    useEffect(() => {
-        const newBankAccount = searchParams.get('bankAccount') || '';
-        if (newBankAccount !== bankAccount) {
-            setBankAccount(newBankAccount);
-        }
-    }, [searchParams]);
-
-    useEffect(() => {
-        callback();
-    }, [bankAccount]);
+    const { incomes, callback } = useIncomes({ list, maxItems });
 
     const getList = (values: Income[]): JSX.Element => {
         return (
@@ -161,14 +121,16 @@ export default function IncomeListClient({
     };
 
     return (
-        <Command>
-            {searchable && <CommandInput placeholder='Search incomes...' />}
-            <CommandEmpty>No incomes found.</CommandEmpty>
-            {groupBy
-                ? Object.entries(groupItemsByMonth(incomes)).map(
-                      ([key, values]) => getGroup(key, values)
-                  )
-                : getList(incomes)}
-        </Command>
+        <>
+            <Command>
+                {searchable && <CommandInput placeholder='Search incomes...' />}
+                <CommandEmpty>No incomes found.</CommandEmpty>
+                {groupBy
+                    ? Object.entries(groupItemsByMonth(incomes)).map(
+                          ([key, values]) => getGroup(key, values)
+                      )
+                    : getList(incomes)}
+            </Command>
+        </>
     );
 }

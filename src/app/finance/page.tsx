@@ -19,6 +19,7 @@ import { ArrowRight } from 'lucide-react';
 import {
     PageDescription,
     PageHeader,
+    PageHeaderSeparator,
     PageTitle
 } from '@/ui/organisms/FinanceDashboard/PageHeader';
 
@@ -76,6 +77,7 @@ export default async function FinancePage({
                     Keep track of your income and expenses. Visualize your
                     financial health. Plan your future.
                 </PageDescription>
+                <PageHeaderSeparator />
             </PageHeader>
             <div className='flex items-center justify-between'>
                 <SelectAccount />
@@ -137,7 +139,7 @@ export default async function FinancePage({
                             </Link>
                         </div>
                         <div className='grid grid-cols-1 gap-4 h-full pb-6 px-4'>
-                            <IncomeList list={recentIncomes}  />
+                            <IncomeList list={recentIncomes} maxItems={5}  />
                         </div>
                     </Panel>
                 </div>

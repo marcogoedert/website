@@ -12,7 +12,6 @@ const PageHeader = React.forwardRef<
         {...props}
     >
         {props.children}
-        <Separator className='my-6' />
     </div>
 ));
 PageHeader.displayName = 'PageHeader';
@@ -53,4 +52,16 @@ const PageSubtitle = React.forwardRef<
 ));
 PageSubtitle.displayName = 'PageSubtitle';
 
-export { PageHeader, PageTitle, PageDescription, PageSubtitle };
+const PageHeaderSeparator = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+    <Separator
+        ref={ref}
+        className={cn('my-6', className)}
+        {...props}
+    />
+));
+PageHeaderSeparator.displayName = 'PageHeaderSeparator';
+
+export { PageHeader, PageTitle, PageDescription, PageSubtitle, PageHeaderSeparator };

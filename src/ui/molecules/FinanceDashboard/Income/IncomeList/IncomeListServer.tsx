@@ -10,12 +10,14 @@ interface IncomeListServerProps {
     list?: Income[];
     searchable?: boolean;
     groupBy?: 'month' | 'category';
+    maxItems?: number;
 }
 
 export default async function IncomeListServer({
     list,
     groupBy,
-    searchable = false
+    searchable = false,
+    maxItems
 }: IncomeListServerProps): Promise<JSX.Element> {
     const incomes = list || (await fetchIncomes());
     const categories = await fetchCategories();
@@ -27,6 +29,7 @@ export default async function IncomeListServer({
                 categories={categories}
                 searchable={searchable}
                 groupBy={groupBy}
+                maxItems={maxItems}
             />
         </Suspense>
     );
