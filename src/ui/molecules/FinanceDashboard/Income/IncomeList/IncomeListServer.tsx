@@ -9,10 +9,12 @@ import { Income } from '@/entities/Income';
 interface IncomeListServerProps {
     list?: Income[];
     searchable?: boolean;
+    groupBy?: 'month' | 'category';
 }
 
 export default async function IncomeListServer({
     list,
+    groupBy,
     searchable = false
 }: IncomeListServerProps): Promise<JSX.Element> {
     const incomes = list || (await fetchIncomes());
@@ -24,6 +26,7 @@ export default async function IncomeListServer({
                 list={incomes}
                 categories={categories}
                 searchable={searchable}
+                groupBy={groupBy}
             />
         </Suspense>
     );

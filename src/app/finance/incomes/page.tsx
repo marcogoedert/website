@@ -15,6 +15,11 @@ import {
     PageHeader,
     PageTitle
 } from '@/ui/organisms/FinanceDashboard/PageHeader';
+import {
+    SideNavigation,
+    SideNavigationItem,
+    SideNavigationProps
+} from '@/ui/organisms/FinanceDashboard/SideNavigation';
 import { format } from 'date-fns';
 
 interface IncomesPageProps {
@@ -29,10 +34,16 @@ export default async function IncomesPage({
         bankAccount: bankAccountParam
     });
 
-    // Get months from incomes
-    const months = Array.from(
-        new Set(incomes.map((income) => format(income.date, 'MMMM yyyy')))
-    );
+    const sideNavItems: SideNavigationItem[] = incomes.reduce((acc, income) => {
+        const month = format(income.date, 'MMMM yyyy');
+        if (!acc.find((item) => item.title === month)) {
+            acc.push({
+                title: month,
+                href: `#${month}`
+            });
+        }
+        return acc;
+    }, [] as SideNavigationItem[]);
 
     return (
         <>
@@ -48,32 +59,13 @@ export default async function IncomesPage({
                     <HomeMenu />
                 </div>
                 <div className='flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>
-                    <aside className='-mx-4 lg:w-1/5'>
-                        <nav className='flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1'>
-                            {months.map((month, key) => (
-                                <a
-                                    key={key}
-                                    href='#'
-                                    className='inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground h-9 px-4 py-2 hover:bg-transparent hover:underline justify-start'
-                                >
-                                    {month}
-                                </a>
-                            ))}
-                        </nav>
-                    </aside>
+                    <SideNavigation items={sideNavItems} />
                     <div className='flex-1 lg:max-w-2xl'>
-                        <Command>
-                            <CommandInput placeholder='Search incomes...' />
-                            <CommandEmpty>No incomes found.</CommandEmpty>
-                            <CommandGroup>
-                                <CommandList className='gap-1'>
-                                    <IncomeList
-                                        list={incomes}
-                                        searchable
-                                    />
-                                </CommandList>
-                            </CommandGroup>
-                        </Command>
+                        <IncomeList
+                            list={incomes}
+                            searchable
+                            groupBy='month'
+                        />
                     </div>
                 </div>
             </div>

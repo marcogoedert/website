@@ -136,8 +136,8 @@ export default async function FinancePage({
                                 </Button>
                             </Link>
                         </div>
-                        <div className='grid grid-cols-1 gap-4 h-full'>
-                            <IncomeList list={recentIncomes} />
+                        <div className='grid grid-cols-1 gap-4 h-full pb-6 px-4'>
+                            <IncomeList list={recentIncomes}  />
                         </div>
                     </Panel>
                 </div>

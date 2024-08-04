@@ -11,26 +11,12 @@ import { format } from 'date-fns';
 import { ArrowRight, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { formatDate } from '@/lib/format';
 
 interface ExpenseListClientProps {
     initialValue: Expense[];
     categories: Category[];
     maxItems?: number;
-}
-
-function formatDate(date: Date): string {
-    if (date.toDateString() === new Date().toDateString()) {
-        return 'Today';
-    }
-
-    if (
-        date.toDateString() ===
-        new Date(new Date().setDate(new Date().getDate() - 1)).toDateString()
-    ) {
-        return 'Yesterday';
-    }
-
-    return format(date, 'd LLL').toUpperCase();
 }
 
 export default function ExpenseListClient({

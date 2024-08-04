@@ -8,43 +8,52 @@ import { Income } from '@/entities/Income';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import IncomeDialog from '../IncomeDialog';
 import { useSearchParams } from 'next/navigation';
-import { CommandItem } from '@/components/ui/command';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList
+} from '@/components/ui/command';
 import {
     List,
-    ListRow,
-    ListRowAmount,
-    ListRowDescription,
-    ListRowIcon,
-    ListRowText,
-    ListRowTitle
+    ListItem,
+    ListItemAmount,
+    ListItemDescription,
+    ListItemIcon,
+    ListItemText,
+    ListItemTitle
 } from '../../List';
+import { formatDate } from '@/lib/format';
 
-function formatDate(date: Date): string {
-    if (date.toDateString() === new Date().toDateString()) {
-        return 'Today';
-    }
+type GroupedItems = { [key: string]: Income[] };
 
-    if (
-        date.toDateString() ===
-        new Date(new Date().setDate(new Date().getDate() - 1)).toDateString()
-    ) {
-        return 'Yesterday';
-    }
-
-    return format(date, 'd LLL').toUpperCase();
+function groupItemsByMonth(items: Income[]): GroupedItems {
+    const dict: GroupedItems = {};
+    return items.reduce((acc, item) => {
+        const key = format(item.date, 'MMMM yyyy');
+        if (!dict[key]) {
+            dict[key] = [];
+        }
+        dict[key].push(item);
+        return dict;
+    }, dict);
 }
 
 interface IncomeListClientProps {
     list: Income[];
     categories: Category[];
-    maxItems?: number;
     searchable?: boolean;
+    groupBy?: 'month' | 'category';
+    maxItems?: number;
 }
 
 export default function IncomeListClient({
     list,
     categories,
-    searchable = false
+    searchable = false,
+    groupBy
 }: IncomeListClientProps): JSX.Element {
     const searchParams = useSearchParams();
     const [bankAccount, setBankAccount] = useState<string>(
@@ -92,58 +101,74 @@ export default function IncomeListClient({
         callback();
     }, [bankAccount]);
 
-    return (
-        <div
-            id='rows-container'
-            className='py-6 px-4 pt-0'
-        >
-            <List>
-                {incomes.map((income, index) => {
-                    const row = (
-                        <IncomeDialog
-                            key={income.id}
-                            income={income}
-                            categories={categories}
-                            callback={callback}
+    const getList = (values: Income[]): JSX.Element => {
+        return (
+            <CommandList className='gap-1'>
+                <List>
+                    {values.map((income, index) => (
+                        <CommandItem
+                            key={`cmd-item-${index}`}
+                            value={`${income.id} ${income.name}`}
+                            asChild
                         >
-                            <ListRow className=''>
-                                <ListRowIcon>
-                                    <Icon
-                                        icon={
-                                            categories.find(
-                                                (category) =>
-                                                    category.id ===
-                                                    income.categoryId
-                                            )?.icon || 'SHOPPING_BASKET'
-                                        }
-                                    />
-                                </ListRowIcon>
-                                <ListRowText>
-                                    <ListRowTitle>{income.name}</ListRowTitle>
-                                    <ListRowDescription>
-                                        {formatDate(income.date)}
-                                    </ListRowDescription>
-                                </ListRowText>
-                                <ListRowAmount>
-                                    +${income.amount.toFixed(2)}
-                                </ListRowAmount>
-                            </ListRow>
-                        </IncomeDialog>
-                    );
-                    if (searchable) {
-                        return (
-                            <CommandItem
-                                key={`cmd-item-${index}`}
-                                value={`${income.id} ${income.name}`}
-                                asChild
+                            <IncomeDialog
+                                key={income.id}
+                                income={income}
+                                categories={categories}
+                                callback={callback}
                             >
-                                {row}
-                            </CommandItem>
-                        );
-                    }
-                    return row;
-                })}
-            </List>
-        </div>
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <Icon
+                                            icon={
+                                                categories.find(
+                                                    (category) =>
+                                                        category.id ===
+                                                        income.categoryId
+                                                )?.icon || 'SHOPPING_BASKET'
+                                            }
+                                        />
+                                    </ListItemIcon>
+                                    <ListItemText>
+                                        <ListItemTitle>
+                                            {income.name}
+                                        </ListItemTitle>
+                                        <ListItemDescription>
+                                            {formatDate(income.date)}
+                                        </ListItemDescription>
+                                    </ListItemText>
+                                    <ListItemAmount>
+                                        +${income.amount.toFixed(2)}
+                                    </ListItemAmount>
+                                </ListItem>
+                            </IncomeDialog>
+                        </CommandItem>
+                    ))}
+                </List>
+            </CommandList>
+        );
+    };
+
+    const getGroup = (key: string, values: Income[]): JSX.Element => {
+        return (
+            <CommandGroup
+                key={key}
+                heading={key}
+            >
+                {getList(values)}
+            </CommandGroup>
+        );
+    };
+
+    return (
+        <Command>
+            {searchable && <CommandInput placeholder='Search incomes...' />}
+            <CommandEmpty>No incomes found.</CommandEmpty>
+            {groupBy
+                ? Object.entries(groupItemsByMonth(incomes)).map(
+                      ([key, values]) => getGroup(key, values)
+                  )
+                : getList(incomes)}
+        </Command>
     );
 }

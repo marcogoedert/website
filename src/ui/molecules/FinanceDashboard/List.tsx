@@ -12,7 +12,7 @@ const List = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
 );
 List.displayName = 'List';
 
-const ListRow = React.forwardRef<
+const ListItem = React.forwardRef<
     HTMLButtonElement,
     {
         type?: 'submit' | 'button' | 'reset';
@@ -27,9 +27,9 @@ const ListRow = React.forwardRef<
         {...props}
     />
 ));
-ListRow.displayName = 'ListRow';
+ListItem.displayName = 'ListItem';
 
-const ListRowIcon = React.forwardRef<
+const ListItemIcon = React.forwardRef<
     HTMLSpanElement,
     React.HTMLProps<HTMLSpanElement>
 >(({ className, ...props }, ref) => (
@@ -42,9 +42,9 @@ const ListRowIcon = React.forwardRef<
         {...props}
     />
 ));
-ListRowIcon.displayName = 'ListRowIcon';
+ListItemIcon.displayName = 'ListItemIcon';
 
-const ListRowText = React.forwardRef<
+const ListItemText = React.forwardRef<
     HTMLDivElement,
     React.HTMLProps<HTMLDivElement>
 >(({ className, ...props }, ref) => (
@@ -54,9 +54,9 @@ const ListRowText = React.forwardRef<
         {...props}
     />
 ));
-ListRowText.displayName = 'ListRowText';
+ListItemText.displayName = 'ListItemText';
 
-const ListRowTitle = React.forwardRef<
+const ListItemTitle = React.forwardRef<
     HTMLParagraphElement,
     React.HTMLProps<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
@@ -66,9 +66,9 @@ const ListRowTitle = React.forwardRef<
         {...props}
     />
 ));
-ListRowTitle.displayName = 'ListRowTitle';
+ListItemTitle.displayName = 'ListItemTitle';
 
-const ListRowDescription = React.forwardRef<
+const ListItemDescription = React.forwardRef<
     HTMLParagraphElement,
     React.HTMLProps<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
@@ -78,9 +78,9 @@ const ListRowDescription = React.forwardRef<
         {...props}
     />
 ));
-ListRowDescription.displayName = 'ListRowDescription';
+ListItemDescription.displayName = 'ListItemDescription';
 
-const ListRowAmount = React.forwardRef<
+const ListItemAmount = React.forwardRef<
     HTMLDivElement,
     React.HTMLProps<HTMLDivElement>
 >(({ className, ...props }, ref) => (
@@ -93,10 +93,10 @@ const ListRowAmount = React.forwardRef<
 
 export {
     List,
-    ListRow,
-    ListRowIcon,
-    ListRowText,
-    ListRowTitle,
-    ListRowDescription,
-    ListRowAmount
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    ListItemTitle,
+    ListItemDescription,
+    ListItemAmount
 };
