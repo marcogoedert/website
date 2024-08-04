@@ -7,19 +7,17 @@ import { useIncomes } from '@/hooks/finance/use-incomes';
 interface AddIncomeProps {
     children: React.ReactNode;
     categories: Category[];
-    callback?: () => Promise<void>;
 }
 
 export function AddIncome({
     children,
-    categories,
-    callback
+    categories
 }: AddIncomeProps): JSX.Element {
-    const { callback: incomeCallback } = useIncomes({ list: [] });
+    const { callback } = useIncomes({ list: [] });
     return (
         <IncomeDialog
             categories={categories}
-            callback={callback || incomeCallback}
+            callback={callback}
         >
             {children}
         </IncomeDialog>
