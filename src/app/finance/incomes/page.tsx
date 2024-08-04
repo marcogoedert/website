@@ -1,12 +1,4 @@
 import { Button } from '@/components/ui/button';
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandList
-} from '@/components/ui/command';
-import { Separator } from '@/components/ui/separator';
 import { fetchCategories } from '@/controller/finance/category.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import Icon from '@/ui/atoms/icons/Icon';
@@ -51,7 +43,7 @@ export default async function IncomesPage({
         if (!acc.find((item) => item.title === month)) {
             acc.push({
                 title: month,
-                href: `#${month}`
+                href: `#${encodeURIComponent(month)}`
             });
         }
         return acc;
@@ -115,7 +107,11 @@ export default async function IncomesPage({
 
             return acc;
         },
-        [{ title: 'This Month', value: 0 }] as Statistics[]
+        [
+            { title: 'This Month', value: 0 },
+            { title: 'Last Month', value: 0 },
+            { title: 'This Year', value: 0 }
+        ] as Statistics[]
     );
 
     return (
@@ -132,9 +128,11 @@ export default async function IncomesPage({
                 <PageHeaderSeparator className='my-4' />
             </PageHeader>
             <div className='flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>
+                {/* SIDE NAVIGATION */}
                 <SideNavigation items={sideNavItems} />
                 <div className='flex-1 lg:max-w-2xl'>
                     <div className='grid grid-cols-12 gap-2 w-full'>
+                        {/* STATISTICS */}
                         {statistics.map(({ title, value }, index) => (
                             <div
                                 key={index}

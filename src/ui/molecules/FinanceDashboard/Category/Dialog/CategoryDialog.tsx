@@ -36,21 +36,6 @@ import {
     deleteCategory,
     updateCategory
 } from '@/controller/finance/category.controller';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
-import { Check, ChevronsUpDown } from 'lucide-react';
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList
-} from '@/components/ui/command';
 import { IconFormField, iconSchema } from '../../Dialog/IconForm';
 
 const formSchema = z.object({

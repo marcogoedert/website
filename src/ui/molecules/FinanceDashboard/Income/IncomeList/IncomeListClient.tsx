@@ -29,6 +29,13 @@ import { formatDate } from '@/lib/format';
 import { useIncomes } from '@/hooks/finance/use-incomes';
 import { AddIncome } from '../AddIncome';
 import { Button } from '@/components/ui/button';
+import {
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuShortcut,
+    ContextMenuTrigger
+} from '@/components/ui/context-menu';
 
 type GroupedItems = { [key: string]: Income[] };
 
@@ -61,64 +68,77 @@ export default function IncomeListClient({
 }: IncomeListClientProps): JSX.Element {
     const { incomes, callback } = useIncomes({ list, maxItems });
 
-    const getList = (values: Income[]): JSX.Element => {
-        return (
-            <CommandList className='gap-1'>
-                <List>
-                    {values.map((income, index) => (
-                        <CommandItem
-                            key={`cmd-item-${index}`}
-                            value={`${income.id} ${income.name}`}
-                            asChild
-                        >
-                            <IncomeDialog
-                                key={income.id}
-                                income={income}
-                                categories={categories}
-                                callback={callback}
-                            >
-                                <ListItem>
-                                    <ListItemIcon>
-                                        <Icon
-                                            icon={
-                                                categories.find(
-                                                    (category) =>
-                                                        category.id ===
-                                                        income.categoryId
-                                                )?.icon || 'SHOPPING_BASKET'
-                                            }
-                                        />
-                                    </ListItemIcon>
-                                    <ListItemText>
-                                        <ListItemTitle>
-                                            {income.name}
-                                        </ListItemTitle>
-                                        <ListItemDescription>
-                                            {formatDate(income.date)}
-                                        </ListItemDescription>
-                                    </ListItemText>
-                                    <ListItemAmount>
-                                        +${income.amount.toFixed(2)}
-                                    </ListItemAmount>
-                                </ListItem>
-                            </IncomeDialog>
-                        </CommandItem>
-                    ))}
-                </List>
-            </CommandList>
-        );
-    };
+    const getListItem = useCallback(
+        (income: Income): JSX.Element => {
+            return (
+                <CommandItem
+                    key={`cmd-item-${income.id}`}
+                    value={`${income.id} ${income.name}`}
+                    asChild
+                >
+                    <IncomeDialog
+                        key={income.id}
+                        income={income}
+                        categories={categories}
+                        callback={callback}
+                    >
+                        <ListItem>
+                            <ListItemIcon>
+                                <Icon
+                                    icon={
+                                        categories.find(
+                                            (category) =>
+                                                category.id ===
+                                                income.categoryId
+                                        )?.icon || 'SHOPPING_BASKET'
+                                    }
+                                />
+                            </ListItemIcon>
+                            <ListItemText>
+                                <ListItemTitle>{income.name}</ListItemTitle>
+                                <ListItemDescription>
+                                    {formatDate(income.date)}
+                                </ListItemDescription>
+                            </ListItemText>
+                            <ListItemAmount>
+                                +${income.amount.toFixed(2)}
+                            </ListItemAmount>
+                        </ListItem>
+                    </IncomeDialog>
+                </CommandItem>
+            );
+        },
+        [callback, categories]
+    );
 
-    const getGroup = (key: string, values: Income[]): JSX.Element => {
-        return (
-            <CommandGroup
-                key={key}
-                heading={key}
-            >
-                {getList(values)}
-            </CommandGroup>
-        );
-    };
+    const getList = useCallback(
+        (key: string, values: Income[]): JSX.Element => {
+            return (
+                <CommandList
+                    className='gap-1'
+                    key={`list-${key}`}
+                >
+                    <List>{values.map((income) => getListItem(income))}</List>
+                </CommandList>
+            );
+        },
+        []
+    );
+
+    const getGroup = useCallback(
+        (key: string, values: Income[]): JSX.Element => {
+            return (
+                <CommandGroup
+                    key={key}
+                    heading={key}
+                >
+                    <div id={key} className='scroll-m-36' />
+                    {getList(key, values)}
+                </CommandGroup>
+            );
+        },
+        []
+    );
 
     return (
         <>
@@ -129,7 +149,7 @@ export default function IncomeListClient({
                     ? Object.entries(groupItemsByMonth(incomes)).map(
                           ([key, values]) => getGroup(key, values)
                       )
-                    : getList(incomes)}
+                    : getList('all', incomes)}
             </Command>
         </>
     );
