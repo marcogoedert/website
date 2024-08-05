@@ -10,6 +10,7 @@ import {
 import { EllipsisVertical, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function HomeMenu(): JSX.Element {
     const [open, setOpen] = useState(false);
@@ -25,14 +26,25 @@ export default function HomeMenu(): JSX.Element {
             onOpenChange={setOpen}
         >
             <PopoverTrigger asChild>
-                <Button
-                    variant='outline'
+                <Avatar
+                    className='h-10 w-10 hover:scale-105 transition-transform duration-300'
+                    aria-expanded={open}
+                    role='combobox'
+                >
+                    <AvatarImage
+                        src='https://github.com/marcogoedert.png'
+                        alt='Marco Goedert'
+                    />
+                    <AvatarFallback>MG</AvatarFallback>
+                </Avatar>
+                {/* <Button
+                    variant='secondary'
                     role='combobox'
                     aria-expanded={open}
-                    className='h-10 w-10'
+                    className='h-10 w-10 inline-flex items-center justify-center rounded-full'
                 >
-                    <EllipsisVertical className='h-4 w-4 shrink-0 opacity-50' />
-                </Button>
+                    MG
+                </Button> */}
             </PopoverTrigger>
             <PopoverContent
                 align='end'

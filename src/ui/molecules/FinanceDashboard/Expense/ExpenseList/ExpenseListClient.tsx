@@ -127,24 +127,7 @@ export default function ExpenseListClient({
                             month.
                         </p>
                     </div>
-                    <Link
-                        href={
-                            searchParams.size > 0
-                                ? `/finance/expenses?${new URLSearchParams(
-                                      searchParams
-                                  )}`
-                                : '/finance/expenses'
-                        }
-                    >
-                        <Button variant='secondary'>
-                            <ArrowRight
-                                className='mr-1'
-                                strokeWidth={1.5}
-                                size={22}
-                            />
-                            View
-                        </Button>
-                    </Link>
+                    
                 </div>
                 <div
                     id='rows-container'

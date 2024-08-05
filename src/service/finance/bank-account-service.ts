@@ -2,26 +2,26 @@ import { Account } from '@/entities/Account';
 import { AccountRepository } from '@/repositories/AccountRepository';
 import { BaseRepository } from '@/repositories/base/BaseRepository';
 
-const ACCOUNT_DATA_FILE_PATH = 'src/data/Account.data.csv';
+const ACCOUNT_DATA_FILE_PATH = 'src/data/BankAccount.data.csv';
 
-export class AccountService {
-    private static instance: AccountService;
+export class BankAccountService {
+    private static instance: BankAccountService;
     private accountsRepository: BaseRepository<Account>;
 
     private constructor(accountsRepository: BaseRepository<Account>) {
         this.accountsRepository = accountsRepository;
     }
 
-    public static async getInstance(): Promise<AccountService> {
-        if (!AccountService.instance) {
+    public static async getInstance(): Promise<BankAccountService> {
+        if (!BankAccountService.instance) {
             const accountsRepository = new AccountRepository(
                 ACCOUNT_DATA_FILE_PATH
             );
             await accountsRepository.init();
-            AccountService.instance = new AccountService(accountsRepository);
+            BankAccountService.instance = new BankAccountService(accountsRepository);
         }
 
-        return AccountService.instance;
+        return BankAccountService.instance;
     }
 
     public async getAccounts(): Promise<Account[]> {

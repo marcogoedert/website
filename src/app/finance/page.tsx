@@ -73,16 +73,7 @@ export default async function FinancePage({
         <>
             <PageHeader>
                 <PageTitle>Finance Dashboard 🪙</PageTitle>
-                <PageDescription>
-                    Keep track of your income and expenses. Visualize your
-                    financial health. Plan your future.
-                </PageDescription>
-                <PageHeaderSeparator />
             </PageHeader>
-            <div className='flex items-center justify-between'>
-                <SelectAccount />
-                <HomeMenu />
-            </div>
             <div className='grid grid-cols-12 gap-2 w-full'>
                 {numericValues.map(({ title, value, icon }, index) => (
                     <div
@@ -110,36 +101,18 @@ export default async function FinancePage({
                 ))}
                 <div className={gridContainerClass}>
                     <Panel>
-                        <div className='flex justify-between items-center'>
-                            <PanelHeader>
-                                <PanelTitle>Recent Incomes</PanelTitle>
-                                <PanelDescription>
-                                    You got {incomesThisMonth.length} incomes
-                                    this month
-                                </PanelDescription>
-                            </PanelHeader>
-                            <Link
-                                href={
-                                    bankAccountParam
-                                        ? `/finance/incomes?bankAccount=${bankAccountParam}`
-                                        : '/finance/incomes'
-                                }
-                            >
-                                <Button
-                                    variant='secondary'
-                                    className='mx-6'
-                                >
-                                    <ArrowRight
-                                        className='mr-1'
-                                        strokeWidth={1.5}
-                                        size={22}
-                                    />
-                                    View
-                                </Button>
-                            </Link>
-                        </div>
+                        <PanelHeader>
+                            <PanelTitle>Recent Incomes</PanelTitle>
+                            <PanelDescription>
+                                You got {incomesThisMonth.length} incomes this
+                                month
+                            </PanelDescription>
+                        </PanelHeader>
                         <div className='grid grid-cols-1 gap-4 h-full pb-6 px-4'>
-                            <IncomeList list={recentIncomes} maxItems={5}  />
+                            <IncomeList
+                                list={recentIncomes}
+                                maxItems={5}
+                            />
                         </div>
                     </Panel>
                 </div>

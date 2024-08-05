@@ -1,4 +1,4 @@
-import { AccountService } from '@/service/finance/AccountService';
+import { BankAccountService } from '@/service/finance/bank-account-service';
 
 interface PathParams {
     params: {
@@ -11,9 +11,9 @@ export async function GET(
     { params }: PathParams
 ): Promise<Response> {
     const { id } = params;
-    
+
     try {
-        const accountService = await AccountService.getInstance();
+        const accountService = await BankAccountService.getInstance();
         const account = await accountService.getAccount(id);
         return Response.json(account);
     } catch (error) {
@@ -27,15 +27,14 @@ export async function DELETE(
     { params }: PathParams
 ): Promise<Response> {
     const { id } = params;
-    
+
     try {
-        const accountService = await AccountService.getInstance();
+        const accountService = await BankAccountService.getInstance();
         const ok = await accountService.deleteAccount(id);
         if (ok) {
-            
             return new Response(undefined, { status: 204 });
         }
-        
+
         return new Response('Account not found', { status: 404 });
     } catch (error) {
         console.error('↘️🚨 ~ DELETE /api/account ~ FAILED', error);

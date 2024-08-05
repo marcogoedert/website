@@ -19,7 +19,7 @@ export class Income extends Entity {
         this.accountId = accountId;
         this.name = name;
         this.amount = amount;
-        this.date = date;
+        this.date = new Date(date);
         this.categoryId = categoryId;
     }
 
