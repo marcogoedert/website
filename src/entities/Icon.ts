@@ -21,6 +21,7 @@ export enum IconEnum {
     HEART = 'heart',
     HOME = 'home',
     HOSPITAL = 'hospital',
+    HOURGLASS = 'hourglass',
     LANDMARK = 'landmark',
     PARTY_POPPER = 'party-popper',
     PAW_PRINT = 'paw-print',

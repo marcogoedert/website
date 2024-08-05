@@ -402,7 +402,7 @@ export default function IncomeDialog({
                                                                                 field.value
                                                                         )
                                                                             ?.icon ||
-                                                                        'SHOPPING_BASKET'
+                                                                        'SHAPES'
                                                                     }
                                                                     className='mr-4'
                                                                 />

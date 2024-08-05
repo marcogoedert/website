@@ -8,7 +8,7 @@ const PageHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <div
         ref={ref}
-        className={cn('flex flex-col gap-1.5', className)}
+        className={cn('pt-6 flex flex-col gap-1.5', className)}
         {...props}
     >
         {props.children}

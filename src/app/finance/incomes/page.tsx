@@ -41,9 +41,6 @@ export default async function IncomesPage({
         <div className='flex flex-col w-full'>
             <PageHeader>
                 <PageTitle>Incomes</PageTitle>
-                <PageDescription>
-                    View and manage all your incomes here.
-                </PageDescription>
                 <div className='flex items-center justify-between mt-4'>
                     <SelectAccount />
                     <HomeMenu />

@@ -86,7 +86,7 @@ const ListItemAmount = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <div
         ref={ref}
-        className={cn('ml-auto font-medium', className)}
+        className={cn('font-medium', className)}
         {...props}
     />
 ));

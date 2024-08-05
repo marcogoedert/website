@@ -22,6 +22,7 @@ import {
     Heart,
     Home,
     Hospital,
+    Hourglass,
     Landmark,
     PartyPopper,
     PawPrint,
@@ -87,6 +88,8 @@ function getIcon(iconName: IconKey) {
             return Home;
         case 'HOSPITAL':
             return Hospital;
+        case 'HOURGLASS':
+            return Hourglass;
         case 'LANDMARK':
             return Landmark;
         case 'PARTY_POPPER':

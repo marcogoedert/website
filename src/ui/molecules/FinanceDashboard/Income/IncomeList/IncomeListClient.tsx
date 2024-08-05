@@ -25,6 +25,7 @@ import {
 } from '../../List';
 import { formatDate } from '@/lib/format';
 import { useIncomes } from '@/hooks/finance/use-incomes';
+import { Badge } from '@/components/ui/badge';
 
 type GroupedItems = { [key: string]: Income[] };
 
@@ -79,7 +80,7 @@ export default function IncomeListClient({
                                             (category) =>
                                                 category.id ===
                                                 income.categoryId
-                                        )?.icon || 'SHOPPING_BASKET'
+                                        )?.icon || 'SHAPES'
                                     }
                                 />
                             </ListItemIcon>
@@ -89,9 +90,14 @@ export default function IncomeListClient({
                                     {formatDate(income.date)}
                                 </ListItemDescription>
                             </ListItemText>
-                            <ListItemAmount>
-                                ${income.amount.toFixed(2)}
-                            </ListItemAmount>
+                            <div className='ml-auto flex items-center gap-6'>
+                                {income.date > new Date() && (
+                                    <Badge variant='default'><Icon icon='HOURGLASS' className='mr-1' iconSettings={{size: 18} }/> Pending</Badge>
+                                )}
+                                <ListItemAmount>
+                                    ${income.amount.toFixed(2)}
+                                </ListItemAmount>
+                            </div>
                         </ListItem>
                     </IncomeDialog>
                 </CommandItem>
