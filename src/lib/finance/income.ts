@@ -106,3 +106,24 @@ export function getIncomeSideNavItems(incomes: Income[]): SideNavigationItem[] {
     }, [] as SideNavigationItem[]);
     return sideNavItems;
 }
+
+export function parseFormattedAmount(value?: string | number): number {
+    if (!value) {
+        return 0;
+    }
+    const cleanValue: string = String(value).replace(/\D/g, '');
+    if (cleanValue.length === 0) {
+        return 0;
+    }
+    return Number(cleanValue) / 100;
+}
+
+export function formatAmount(value?: string | number): string {
+    const [integer, decimal] = (
+        typeof value === 'number' ? value : parseFormattedAmount(value)
+    )
+        .toFixed(2)
+        .split('.');
+    const integerWithDots = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return `$ ${integerWithDots},${decimal}`;
+}

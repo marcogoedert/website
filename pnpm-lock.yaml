@@ -74,6 +74,9 @@ importers:
       csv:
         specifier: ^6.3.10
         version: 6.3.10
+      csv-parse:
+        specifier: ^5.5.6
+        version: 5.5.6
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0

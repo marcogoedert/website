@@ -51,7 +51,7 @@ export class IncomeRepository extends EntityRepository<Income> {
         try {
             const header = 'id,accountId,name,amount,date,categoryId\n';
             const data: string = collection
-                .map((a) => Object.values(a).join(','))
+                .map((income) => income.toCSV())
                 .join('\n');
             await fs.writeFile(this._filePath, header + data, {
                 encoding: 'utf8'

@@ -22,4 +22,10 @@ export class Income extends Entity {
         this.date = date;
         this.categoryId = categoryId;
     }
+
+    public toCSV(): string {
+        return `${this.id},${this.accountId},${this.name},${
+            this.amount
+        },${this.date.toISOString()},${this.categoryId}`;
+    }
 }

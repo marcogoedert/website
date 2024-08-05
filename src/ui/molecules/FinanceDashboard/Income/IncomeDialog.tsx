@@ -53,13 +53,26 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { dateSchema, dateSchemaDefaultValue } from '../Dialog/DateForm';
 import { findIconByCategory } from '@/lib/finance/category';
+import { formatAmount, parseFormattedAmount } from '@/lib/finance/income';
 
 const MIN_DATE = new Date('1998-02-11');
 const MAX_DATE = new Date('2038-02-11');
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
-    amount: z.coerce.number().min(0).max(1000000),
+    amount: z
+        .string({
+            required_error: 'Amount is required'
+        })
+        .refine(
+            (value) => {
+                const replacedValue = value.replace(/\D/g, '');
+                return !!Number(replacedValue);
+            },
+            {
+                message: 'Amount must be a number'
+            }
+        ),
     date: dateSchema,
     categoryId: z.string().min(1).max(50)
 });
@@ -89,7 +102,7 @@ export default function IncomeDialog({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: virtualIncome?.name || '',
-            amount: virtualIncome?.amount || 0,
+            amount: formatAmount(virtualIncome?.amount),
             date: virtualIncome?.date
                 ? new Date(virtualIncome.date)
                 : dateSchemaDefaultValue,
@@ -103,7 +116,7 @@ export default function IncomeDialog({
                 virtualIncome?.id || String(Date.now()),
                 searchParams.get('bankAccount') || '0',
                 values.name,
-                values.amount,
+                parseFormattedAmount(values.amount),
                 values.date,
                 values.categoryId
             );
@@ -148,7 +161,7 @@ export default function IncomeDialog({
         );
         form.reset({
             name: `${virtualIncome?.name} (Copy)`,
-            amount: virtualIncome?.amount || 0,
+            amount: formatAmount(virtualIncome?.amount),
             date: virtualIncome?.date
                 ? new Date(virtualIncome.date)
                 : new Date(Date.now()),
@@ -162,7 +175,7 @@ export default function IncomeDialog({
             if (!isOpen) {
                 form.reset({
                     name: income?.name || '',
-                    amount: income?.amount || 0,
+                    amount: formatAmount(income?.amount),
                     date: income?.date
                         ? new Date(income.date)
                         : new Date(Date.now()),
@@ -180,7 +193,7 @@ export default function IncomeDialog({
             setVirtualIncome(income ? { ...income } : null);
             form.reset({
                 name: income?.name || '',
-                amount: income?.amount || 0,
+                amount: formatAmount(income?.amount),
                 date: income?.date
                     ? new Date(income.date)
                     : new Date(Date.now()),
@@ -248,14 +261,22 @@ export default function IncomeDialog({
                                 <FormField
                                     control={form.control}
                                     name='amount'
-                                    render={({ field }) => (
+                                    render={({
+                                        field: { onChange, ...props }
+                                    }) => (
                                         <FormItem>
                                             <FormLabel>Amount</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    type='number'
-                                                    placeholder='0'
-                                                    {...field}
+                                                    {...props}
+                                                    placeholder='11.02'
+                                                    onChange={(e) => {
+                                                        const { value } =
+                                                            e.target;
+                                                        e.target.value =
+                                                            formatAmount(value);
+                                                        onChange(e);
+                                                    }}
                                                 />
                                             </FormControl>
                                             <FormDescription>

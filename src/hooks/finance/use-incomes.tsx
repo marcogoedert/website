@@ -57,16 +57,20 @@ export function useIncomes({ list, maxItems }: UseIncomesProps) {
     }, [bankAccount]);
 
     useEffect(() => {
-        list.map((income) => {
-            return new Income(
-                income.id,
-                income.accountId,
-                income.name,
-                income.amount,
-                new Date(income.date),
-                income.categoryId
-            );
-        }) || [];
+        if (!list) return;
+        if (list.length === incomes.length) return;
+        setIncomes(
+            list.map((income) => {
+                return new Income(
+                    income.id,
+                    income.accountId,
+                    income.name,
+                    income.amount,
+                    new Date(income.date),
+                    income.categoryId
+                );
+            }) || []
+        );
     }, [list]);
 
     if (maxItems) {
