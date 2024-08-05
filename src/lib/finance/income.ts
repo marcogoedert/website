@@ -6,14 +6,31 @@ import { formatDate } from 'date-fns';
 export function getIncomeStats(incomes: Income[]): Statistics[] {
     const statistics: Statistics[] = incomes.reduce(
         (acc, income) => {
-            const thisMonth = new Date().getMonth();
-            const thisYear = new Date().getFullYear();
+            const today = new Date();
+            const thisMonth = today.getMonth();
+            const thisYear = today.getFullYear();
             const lastMonth = thisMonth === 0 ? 11 : thisMonth - 1;
             const lastMonthYear = thisMonth === 0 ? thisYear - 1 : thisYear;
 
             const incomeDate = new Date(income.date);
 
+            if (incomeDate > today) {
+                const totalPending = acc.find(
+                    (stat) => stat.title === 'Pending'
+                );
+                if (totalPending) {
+                    totalPending.value += income.amount;
+                } else {
+                    acc.push({
+                        title: 'Pending',
+                        value: income.amount,
+                        icon: 'HOURGLASS'
+                    });
+                }
+            }
+
             if (
+                incomeDate <= today &&
                 incomeDate.getMonth() === thisMonth &&
                 incomeDate.getFullYear() === thisYear
             ) {
