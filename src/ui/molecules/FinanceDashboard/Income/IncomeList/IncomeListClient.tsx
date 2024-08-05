@@ -90,7 +90,7 @@ export default function IncomeListClient({
                                 </ListItemDescription>
                             </ListItemText>
                             <ListItemAmount>
-                                +${income.amount.toFixed(2)}
+                                ${income.amount.toFixed(2)}
                             </ListItemAmount>
                         </ListItem>
                     </IncomeDialog>
