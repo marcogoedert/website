@@ -54,6 +54,7 @@ import { z } from 'zod';
 import { dateSchema, dateSchemaDefaultValue } from '../Dialog/DateForm';
 import { findIconByCategory } from '@/lib/finance/category';
 import { formatAmount, parseFormattedAmount } from '@/lib/finance/income';
+import { Badge } from '@/components/ui/badge';
 
 const MIN_DATE = new Date('1998-02-11');
 const MAX_DATE = new Date('2038-02-11');
@@ -233,7 +234,7 @@ export default function IncomeDialog({
                             className='space-y-8'
                         >
                             {/* Form Body Start */}
-                            <div className='grid gap-4 py-4'>
+                            <div className='grid gap-4'>
                                 {/* Income Name */}
                                 <FormField
                                     control={form.control}

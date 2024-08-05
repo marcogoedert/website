@@ -92,7 +92,14 @@ export default function IncomeListClient({
                             </ListItemText>
                             <div className='ml-auto flex items-center gap-6'>
                                 {income.date > new Date() && (
-                                    <Badge variant='default'><Icon icon='HOURGLASS' className='mr-1' iconSettings={{size: 18} }/> Pending</Badge>
+                                    <Badge variant='default'>
+                                        <Icon
+                                            icon='HOURGLASS'
+                                            className='mr-1'
+                                            iconSettings={{ size: 18 }}
+                                        />{' '}
+                                        Pending
+                                    </Badge>
                                 )}
                                 <ListItemAmount>
                                     ${income.amount.toFixed(2)}
