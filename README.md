@@ -17,3 +17,8 @@
 - Expenses
   - [ ] Segregate expenses by debit/credit
   - [ ] Show all debits (financing, installments)
+
+- Export data
+- Import data
+- Filter data by date
+- Filter data by category

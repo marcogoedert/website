@@ -488,36 +488,47 @@ export default function IncomeDialog({
                                 {/* Form Body End */}
                             </div>
                             <DialogFooter>
-                                <Button
-                                    type='button'
-                                    disabled={
-                                        !virtualIncome ||
-                                        !virtualIncome?.id ||
-                                        form.formState.isSubmitting
-                                    }
-                                    className={
-                                        form.formState.isSubmitted &&
-                                        !form.formState.isValid
-                                            ? 'text-red-500'
-                                            : ''
-                                    }
-                                    variant='outline'
-                                    onClick={onDuplicate}
-                                >
-                                    Duplicate
-                                </Button>
-                                <DialogClose asChild>
+                                {!(
+                                    !virtualIncome ||
+                                    !virtualIncome?.id ||
+                                    form.formState.isSubmitting
+                                ) && (
                                     <Button
-                                        variant='destructive'
-                                        onClick={onDelete}
+                                        type='button'
                                         disabled={
+                                            !virtualIncome ||
                                             !virtualIncome?.id ||
                                             form.formState.isSubmitting
                                         }
+                                        className={
+                                            form.formState.isSubmitted &&
+                                            !form.formState.isValid
+                                                ? 'text-red-500'
+                                                : ''
+                                        }
+                                        variant='outline'
+                                        onClick={onDuplicate}
                                     >
-                                        Delete
+                                        Duplicate
                                     </Button>
-                                </DialogClose>
+                                )}
+                                {!(
+                                    !virtualIncome?.id ||
+                                    form.formState.isSubmitting
+                                ) && (
+                                    <DialogClose asChild>
+                                        <Button
+                                            variant='destructive'
+                                            onClick={onDelete}
+                                            disabled={
+                                                !virtualIncome?.id ||
+                                                form.formState.isSubmitting
+                                            }
+                                        >
+                                            Delete
+                                        </Button>
+                                    </DialogClose>
+                                )}
                                 <Button
                                     type='submit'
                                     disabled={form.formState.isSubmitting}
