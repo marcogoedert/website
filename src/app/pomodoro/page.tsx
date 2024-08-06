@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { H3 } from "@/ui/atoms/typography";
-import Timer from "@/ui/molecules/timer/timer";
+import Timer from "@/ui/molecules/pomodoro/timer/timer";
 import Pomodoro from "@/ui/organisms/PomodoroTimer/pomodoro-root";
 import Grid from "@/ui/templates/Grid";
 import { Metadata } from "next";

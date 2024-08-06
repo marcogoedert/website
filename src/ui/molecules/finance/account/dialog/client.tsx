@@ -35,8 +35,8 @@ import {
     IconFormField,
     iconSchema,
     iconSchemaDefaultValue
-} from '../../Dialog/IconForm';
-import { SwitchFormField } from '../../Dialog/SwitchForm';
+} from '../../common/dialog/IconForm';
+import { SwitchFormField } from '../../common/dialog/SwitchForm';
 import { IconKey } from '@/entities/Icon';
 import { AccountDialogClientProps } from './types';
 

@@ -2,19 +2,18 @@ import ExpenseList from '@/ui/molecules/finance/Expense/ExpenseList';
 import IncomeList from '@/ui/molecules/finance/income/list';
 import { fetchExpenses } from '@/controller/finance/expenses.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
+
+import Icon from '@/ui/atoms/icons/Icon';
+import { IconKey } from '@/entities/Icon';
+
 import {
     Panel,
     PanelContent,
     PanelDescription,
     PanelHeader,
     PanelTitle
-} from '@/ui/molecules/finance/Panel';
-import Icon from '@/ui/atoms/icons/Icon';
-import { IconKey } from '@/entities/Icon';
-import {
-    PageHeader,
-    PageTitle
-} from '@/ui/organisms/finance/PageHeader';
+} from '@/ui/molecules/finance/common/panel';
+import { PageHeader, PageTitle } from '@/ui/organisms/finance/header';
 
 console.log('FINANCE_HOME_MAX_ITEMS', process.env.FINANCE_HOME_MAX_ITEMS);
 

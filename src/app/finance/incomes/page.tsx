@@ -4,20 +4,13 @@ import { fetchCategories } from '@/controller/finance/category.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import { getIncomeSideNavItems, getIncomeStats } from '@/lib/finance/income';
 import Icon from '@/ui/atoms/icons/Icon';
+import { NavigationItem } from '@/ui/molecules/finance/common/navigation/types';
+import { NavigationVertical } from '@/ui/molecules/finance/common/navigation/vertical';
+import { Stat } from '@/ui/molecules/finance/common/panel/stat/types';
 import IncomeAdd from '@/ui/molecules/finance/income/add';
 import IncomeList from '@/ui/molecules/finance/income/list';
-import {
-    PageHeader,
-    PageTitle
-} from '@/ui/organisms/finance/PageHeader';
-import {
-    SideNavigation,
-    SideNavigationItem
-} from '@/ui/organisms/finance/SideNavigation';
-import {
-    Statistics,
-    StatsPanels
-} from '@/ui/organisms/finance/Statistics/Statistics';
+import { PageHeader, PageTitle } from '@/ui/organisms/finance/header';
+import { Stats } from '@/ui/organisms/finance/stats';
 
 interface IncomesPageProps {
     searchParams: { [key: string]: string | string[] | undefined };
@@ -31,8 +24,8 @@ export default async function IncomesPage({
         bankAccount: bankAccountParam
     });
     const categories = await fetchCategories();
-    const sideNavItems: SideNavigationItem[] = getIncomeSideNavItems(incomes);
-    const statistics: Statistics[] = getIncomeStats(incomes);
+    const sideNavItems: NavigationItem[] = getIncomeSideNavItems(incomes);
+    const statistics: Stat[] = getIncomeStats(incomes);
 
     return (
         <>
@@ -67,7 +60,7 @@ export default async function IncomesPage({
                     className='col-span-12'
                 >
                     <div className='flex-1'>
-                        <StatsPanels stats={statistics} />
+                        <Stats stats={statistics} />
                     </div>
                 </TabsContent>
                 <TabsContent
@@ -76,7 +69,7 @@ export default async function IncomesPage({
                 >
                     <div className='flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>
                         {/* SIDE NAVIGATION */}
-                        <SideNavigation items={sideNavItems} />
+                        <NavigationVertical items={sideNavItems} />
                         <div className='flex-1 lg:max-w-2xl'>
                             <IncomeList
                                 list={incomes}

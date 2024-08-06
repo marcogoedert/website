@@ -1,17 +1,23 @@
-import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    navigationMenuTriggerStyle
-} from '@/components/ui/navigation-menu';
 import { Separator } from '@/components/ui/separator';
 import { AccountSelect } from '@/ui/molecules/finance/account/select';
-
-import HomeMenu from '@/ui/molecules/finance/ActionMenu/HomeMenu';
-
+import { MenuUser } from '@/ui/molecules/finance/common/menu/user';
+import { NavigationHorizontal } from '@/ui/molecules/finance/common/navigation/horizontal/server';
 import { Metadata } from 'next';
-import Link from 'next/link';
+
+const items = [
+    {
+        title: 'Overview',
+        href: '/finance'
+    },
+    {
+        title: 'Incomes',
+        href: '/finance/incomes'
+    },
+    {
+        title: 'Expenses',
+        href: '/finance/expenses'
+    }
+];
 
 export const metadata: Metadata = {
     title: {
@@ -32,51 +38,9 @@ export default function FinanceLayout({
             <div className='container relative flex items-center justify-between flex-wrap sm:h-16'>
                 <div className='-ml-4 flex items-center justify-start flex-wrap gap-4'>
                     <AccountSelect />
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <Link
-                                    href='/finance'
-                                    legacyBehavior
-                                    passHref
-                                >
-                                    <NavigationMenuLink
-                                        className={navigationMenuTriggerStyle()}
-                                    >
-                                        Overview
-                                    </NavigationMenuLink>
-                                </Link>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <Link
-                                    href='/finance/incomes'
-                                    legacyBehavior
-                                    passHref
-                                >
-                                    <NavigationMenuLink
-                                        className={navigationMenuTriggerStyle()}
-                                    >
-                                        Incomes
-                                    </NavigationMenuLink>
-                                </Link>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <Link
-                                    href='/finance/expenses'
-                                    legacyBehavior
-                                    passHref
-                                >
-                                    <NavigationMenuLink
-                                        className={navigationMenuTriggerStyle()}
-                                    >
-                                        Expenses
-                                    </NavigationMenuLink>
-                                </Link>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
+                    <NavigationHorizontal items={items} />
                 </div>
-                <HomeMenu />
+                <MenuUser />
             </div>
             <Separator className='my-0' />
             <div className='container relative space-y-4'>{children}</div>

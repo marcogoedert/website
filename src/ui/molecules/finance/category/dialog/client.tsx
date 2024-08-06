@@ -36,7 +36,7 @@ import {
     deleteCategory,
     updateCategory
 } from '@/controller/finance/category.controller';
-import { IconFormField, iconSchema } from '../../Dialog/IconForm';
+import { IconFormField, iconSchema } from '../../common/dialog/IconForm';
 import { CategoryDialogClientProps } from './types';
 
 const formSchema = z.object({

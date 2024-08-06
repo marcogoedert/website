@@ -21,7 +21,7 @@ import {
     ListItemIcon,
     ListItemText,
     ListItemTitle
-} from '../../List';
+} from '../../common/list';
 import { formatDate } from '@/lib/format';
 import { useIncomes } from '@/hooks/finance/use-incomes';
 import { Badge } from '@/components/ui/badge';

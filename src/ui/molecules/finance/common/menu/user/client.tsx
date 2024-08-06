@@ -10,7 +10,6 @@ import { Settings2, User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
 import {
     Command,
     CommandGroup,
@@ -20,7 +19,7 @@ import {
     CommandShortcut
 } from '@/components/ui/command';
 
-export default function HomeMenu(): JSX.Element {
+export function MenuUserClient(): JSX.Element {
     const [open, setOpen] = useState(false);
     const searchParams = useSearchParams();
     const pathname = usePathname();

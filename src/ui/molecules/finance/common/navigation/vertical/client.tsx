@@ -10,7 +10,7 @@ import {
 
 import { useMemo } from 'react';
 import { useHash } from '@/hooks/use-hash';
-import { SideNavigationItem, SideNavigationProps } from './SideNavigation.type';
+import { NavigationItem, NavigationProps } from '../types';
 
 const linkClass =
     'inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:text-accent-foreground h-9 px-4 py-2 hover:bg-transparent hover:underline justify-start';
@@ -19,9 +19,9 @@ function getSearchParamsString(searchParams: ReadonlyURLSearchParams): string {
     return searchParams.size > 0 ? `?${searchParams.toString()}` : '';
 }
 
-export function SideNavigationClient({
+export function NavigationVerticalClient({
     items
-}: SideNavigationProps): JSX.Element {
+}: NavigationProps): JSX.Element {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const hash = useHash();
@@ -30,7 +30,7 @@ export function SideNavigationClient({
         return `${pathname}${getSearchParamsString(searchParams)}${hash}`;
     }, [pathname, searchParams, hash]);
 
-    const hrefs: SideNavigationItem[] = useMemo(
+    const hrefs: NavigationItem[] = useMemo(
         () =>
             items.map((item) => {
                 const { href, hash } = item;
