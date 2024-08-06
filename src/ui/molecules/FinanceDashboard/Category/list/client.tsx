@@ -15,12 +15,9 @@ import {
     CommandList
 } from '@/components/ui/command';
 import { IconKey } from '@/entities/Icon';
+import type { CategoryListClientProps } from './types';
 
-interface CategoryListClientProps {
-    list: Category[];
-}
-
-export default function CategoryListClient({
+export function CategoryListClient({
     list
 }: CategoryListClientProps): JSX.Element {
     const [categories, setCategories] = useState<Category[]>(list);
