@@ -4,7 +4,7 @@ import { fetchCategories } from '@/controller/finance/category.controller';
 import { Category } from '@/entities/Category';
 import Icon from '@/ui/atoms/icons/Icon';
 import { useCallback, useState } from 'react';
-import CategoryDialog from '../Dialog/CategoryDialog';
+
 import { Button } from '@/components/ui/button';
 import {
     Command,
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/command';
 import { IconKey } from '@/entities/Icon';
 import type { CategoryListClientProps } from './types';
+import { CategoryDialog } from '../dialog';
 
 export function CategoryListClient({
     list

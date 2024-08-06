@@ -30,29 +30,25 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { useEffect, useState } from 'react';
 import Icon from '@/ui/atoms/icons/Icon';
-import { IconEnum, IconKey } from '@/entities/Icon';
+import { IconKey } from '@/entities/Icon';
 import {
     addCategory,
     deleteCategory,
     updateCategory
 } from '@/controller/finance/category.controller';
 import { IconFormField, iconSchema } from '../../Dialog/IconForm';
+import { CategoryDialogClientProps } from './types';
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
     icon: iconSchema
 });
-interface CategoryDialogProps {
-    category?: Category;
-    callback: () => Promise<void>;
-    children: React.ReactNode;
-}
 
-export default function CategoryDialog({
+export function CategoryDialogClient({
     category,
     callback,
     ...props
-}: CategoryDialogProps) {
+}: CategoryDialogClientProps) {
     const [open, setOpen] = useState(false);
     const categoryName = category?.name || 'New Category';
 
