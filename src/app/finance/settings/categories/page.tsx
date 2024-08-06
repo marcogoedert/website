@@ -1,11 +1,11 @@
 import { Separator } from '@/components/ui/separator';
 import { fetchCategories } from '@/controller/finance/category.controller';
-import { CategoryList } from '@/ui/molecules/FinanceDashboard/category/list';
+import { CategoryList } from '@/ui/molecules/finance/category/list';
 
 import {
     PageDescription,
     PageSubtitle
-} from '@/ui/organisms/FinanceDashboard/PageHeader';
+} from '@/ui/organisms/finance/PageHeader';
 
 export default async function CategoriesPage(): Promise<JSX.Element> {
     const categories = await fetchCategories();

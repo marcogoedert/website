@@ -6,9 +6,9 @@ import {
     navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
 import { Separator } from '@/components/ui/separator';
-import { AccountSelect } from '@/ui/molecules/FinanceDashboard/account/select';
+import { AccountSelect } from '@/ui/molecules/finance/account/select';
 
-import HomeMenu from '@/ui/molecules/FinanceDashboard/ActionMenu/HomeMenu';
+import HomeMenu from '@/ui/molecules/finance/ActionMenu/HomeMenu';
 
 import { Metadata } from 'next';
 import Link from 'next/link';

@@ -4,20 +4,20 @@ import { fetchCategories } from '@/controller/finance/category.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import { getIncomeSideNavItems, getIncomeStats } from '@/lib/finance/income';
 import Icon from '@/ui/atoms/icons/Icon';
-import IncomeAdd from '@/ui/molecules/FinanceDashboard/income/add';
-import IncomeList from '@/ui/molecules/FinanceDashboard/income/list';
+import IncomeAdd from '@/ui/molecules/finance/income/add';
+import IncomeList from '@/ui/molecules/finance/income/list';
 import {
     PageHeader,
     PageTitle
-} from '@/ui/organisms/FinanceDashboard/PageHeader';
+} from '@/ui/organisms/finance/PageHeader';
 import {
     SideNavigation,
     SideNavigationItem
-} from '@/ui/organisms/FinanceDashboard/SideNavigation';
+} from '@/ui/organisms/finance/SideNavigation';
 import {
     Statistics,
     StatsPanels
-} from '@/ui/organisms/FinanceDashboard/Statistics/Statistics';
+} from '@/ui/organisms/finance/Statistics/Statistics';
 
 interface IncomesPageProps {
     searchParams: { [key: string]: string | string[] | undefined };

@@ -5,7 +5,7 @@ import {
     PanelContent,
     PanelHeader,
     PanelTitle
-} from '@/ui/molecules/FinanceDashboard/Panel';
+} from '@/ui/molecules/finance/Panel';
 
 export type Statistics = {
     title: string;

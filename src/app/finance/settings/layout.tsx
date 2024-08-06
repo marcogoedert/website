@@ -1,11 +1,11 @@
 import {
     PageHeader,
     PageTitle
-} from '@/ui/organisms/FinanceDashboard/PageHeader';
+} from '@/ui/organisms/finance/PageHeader';
 import {
     SideNavigation,
     SideNavigationItem
-} from '@/ui/organisms/FinanceDashboard/SideNavigation';
+} from '@/ui/organisms/finance/SideNavigation';
 
 const items: SideNavigationItem[] = [
     { title: 'Bank Accounts', href: `/finance/settings` },

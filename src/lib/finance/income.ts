@@ -1,6 +1,6 @@
 import { Income } from '@/entities/Income';
-import { SideNavigationItem } from '@/ui/organisms/FinanceDashboard/SideNavigation';
-import { Statistics } from '@/ui/organisms/FinanceDashboard/Statistics/Statistics';
+import { SideNavigationItem } from '@/ui/organisms/finance/SideNavigation';
+import { Statistics } from '@/ui/organisms/finance/Statistics/Statistics';
 import { formatDate } from 'date-fns';
 
 export function getIncomeStats(incomes: Income[]): Statistics[] {
