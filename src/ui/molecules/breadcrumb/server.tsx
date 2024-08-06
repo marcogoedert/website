@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
-import { BreadcrumbClient } from './BreadcrumbClient';
+import { BreadcrumbClient } from './client';
 
 export function BreadcrumbServer() {
     return (
-        <Suspense>
+        <Suspense fallback={<div>Loading...</div>}>
             <BreadcrumbClient />
         </Suspense>
     );

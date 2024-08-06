@@ -1,19 +1,12 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger
 } from '@/components/ui/popover';
-import {
-    ArrowUpRight,
-    EllipsisVertical,
-    Settings,
-    Settings2,
-    User
-} from 'lucide-react';
+import { Settings2, User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -86,7 +79,10 @@ export default function HomeMenu(): JSX.Element {
                                 <CommandShortcut>⌘P</CommandShortcut>
                             </Link>
                         </CommandItem>
-                        <CommandItem className='p-0' disabled={pathname === '/finance/settings'}>
+                        <CommandItem
+                            className='p-0'
+                            disabled={pathname === '/finance/settings'}
+                        >
                             <Link
                                 className='relative w-full h-max flex items-center gap-0.5 px-2 py-1.5'
                                 href={
