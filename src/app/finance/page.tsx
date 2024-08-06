@@ -2,10 +2,6 @@ import ExpenseList from '@/ui/molecules/finance/Expense/ExpenseList';
 import IncomeList from '@/ui/molecules/finance/income/list';
 import { fetchExpenses } from '@/controller/finance/expenses.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
-
-import Icon from '@/ui/atoms/icons/Icon';
-import { IconKey } from '@/entities/Icon';
-
 import {
     Panel,
     PanelContent,
@@ -14,6 +10,9 @@ import {
     PanelTitle
 } from '@/ui/molecules/finance/common/panel';
 import { PageHeader, PageTitle } from '@/ui/organisms/finance/header';
+import { Stats } from '@/ui/organisms/finance/stats';
+import { Grid } from '@/ui/templates/grid';
+import { Stat } from '@/ui/molecules/finance/common/panel/stat/types';
 
 const MAX_ITEMS = Number(process.env.FINANCE_HOME_MAX_ITEMS || 5);
 interface FinancePageProps {
@@ -35,13 +34,7 @@ export default async function FinancePage({
     const totalIncome = incomes.reduce((acc, i) => acc + i.amount, 0);
     const totalExpense = expenses.reduce((acc, e) => acc + e.amount, 0);
 
-    const gridContainerClass = 'col-span-12 md:col-span-6';
-
-    const numericValues: {
-        title: string;
-        value: number;
-        icon: IconKey;
-    }[] = [
+    const stats: Stat[] = [
         {
             title: 'Balance',
             value: totalIncome - totalExpense,
@@ -63,34 +56,11 @@ export default async function FinancePage({
     return (
         <>
             <PageHeader>
-                <PageTitle>Moneyyy B1tCh 🤑🫰</PageTitle>
+                <PageTitle>Overview</PageTitle>
             </PageHeader>
-            <div className='grid grid-cols-12 gap-4 w-full'>
-                {numericValues.map(({ title, value, icon }, index) => (
-                    <div
-                        key={index}
-                        className='col-span-12 sm:col-span-4'
-                    >
-                        <Panel>
-                            <PanelHeader className='flex-row items-center justify-between'>
-                                <PanelTitle className='inline-'>
-                                    {title}
-                                </PanelTitle>
-                                <Icon
-                                    icon={icon}
-                                    iconSettings={{ size: 20 }}
-                                />
-                            </PanelHeader>
-                            <PanelContent>
-                                <p className='text-4xl font-bold'>
-                                    {value < 0 && '-'}$
-                                    {Math.abs(value).toFixed(2)}
-                                </p>
-                            </PanelContent>
-                        </Panel>
-                    </div>
-                ))}
-                <div className={gridContainerClass}>
+            <Stats stats={stats} />
+            <Grid>
+                <div className='col-span-12 md:col-span-6'>
                     <Panel>
                         <PanelHeader>
                             <PanelTitle>Recent Incomes</PanelTitle>
@@ -99,18 +69,18 @@ export default async function FinancePage({
                                 month
                             </PanelDescription>
                         </PanelHeader>
-                        {/* <div className='pb-6 px-4 border border-yellow-400'> */}
-                        <IncomeList
-                            list={recentIncomes}
-                            maxItems={MAX_ITEMS}
-                        />
-                        {/* </div> */}
+                        <PanelContent>
+                            <IncomeList
+                                list={recentIncomes}
+                                maxItems={MAX_ITEMS}
+                            />
+                        </PanelContent>
                     </Panel>
                 </div>
-                <div className={gridContainerClass}>
+                <div className='col-span-12 md:col-span-6'>
                     <ExpenseList list={recentExpenses} />
                 </div>
-            </div>
+            </Grid>
         </>
     );
 }
