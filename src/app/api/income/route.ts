@@ -29,7 +29,6 @@ export async function GET(req: Request): Promise<Response> {
 // Add a new income
 export async function POST(request: Request) {
     const body = await request.json();
-    console.log('POST /api/income', body);
     const incomeService = await IncomeService.getInstance();
     const ok = await incomeService.addIncome(body);
     if (ok) {

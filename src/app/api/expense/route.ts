@@ -29,7 +29,6 @@ export async function GET(req: Request): Promise<Response> {
 // Add a new expense
 export async function POST(request: Request) {
     const body = await request.json();
-    console.log('POST /api/expense', body);
     const expenseService = await ExpenseService.getInstance();
     const ok = await expenseService.addExpense(body);
     if (ok) {

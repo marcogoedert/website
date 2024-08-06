@@ -48,25 +48,19 @@ export default async function IncomesPage({
             </PageHeader>
             <Tabs
                 defaultValue='overview'
-                className='grid grid-cols-12 w-full gap-y-4'
+                className='w-full space-y-4'
             >
-                <TabsList className='col-span-2'>
+                <TabsList>
                     <TabsTrigger value='overview'>Overview</TabsTrigger>
                     <TabsTrigger value='history'>History</TabsTrigger>
                 </TabsList>
-                <span className='col-span-10' />
-                <TabsContent
-                    value='overview'
-                    className='col-span-12'
-                >
+
+                <TabsContent value='overview'>
                     <div className='flex-1'>
                         <Stats stats={statistics} />
                     </div>
                 </TabsContent>
-                <TabsContent
-                    value='history'
-                    className='col-span-12'
-                >
+                <TabsContent value='history'>
                     <div className='flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>
                         {/* SIDE NAVIGATION */}
                         <NavigationVertical items={sideNavItems} />

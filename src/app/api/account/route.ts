@@ -29,7 +29,6 @@ export async function POST(request: Request) {
 // Update a account
 export async function PATCH(req: Request): Promise<Response> {
     const body = await req.json();
-    console.log('🚀 ~ file: route.ts ~ line 116 ~ PATCH ~ body', body);
     const accountService = await BankAccountService.getInstance();
     const ok = await accountService.updateAccount(body);
     if (ok) {

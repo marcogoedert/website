@@ -15,10 +15,7 @@ import {
 } from '@/ui/molecules/finance/common/panel';
 import { PageHeader, PageTitle } from '@/ui/organisms/finance/header';
 
-console.log('FINANCE_HOME_MAX_ITEMS', process.env.FINANCE_HOME_MAX_ITEMS);
-
 const MAX_ITEMS = Number(process.env.FINANCE_HOME_MAX_ITEMS || 5);
-
 interface FinancePageProps {
     searchParams: { [key: string]: string | string[] | undefined };
 }
