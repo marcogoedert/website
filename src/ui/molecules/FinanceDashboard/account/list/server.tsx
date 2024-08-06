@@ -1,11 +1,7 @@
 import { fetchAccounts } from '@/controller/finance/account.controller';
-import { Account } from '@/entities/Account';
 import { Suspense } from 'react';
-import { AccountListClient } from './AccountListClient';
-
-interface AccountListServerProps {
-    list?: Account[];
-}
+import { AccountListClient } from './client';
+import type { AccountListServerProps } from './types';
 
 export async function AccountListServer({
     list

@@ -1,9 +1,7 @@
 'use client';
 
 import { fetchAccounts } from '@/controller/finance/account.controller';
-import { Account } from '@/entities/Account';
 import { useCallback, useState } from 'react';
-import AccountDialog from '../AccountDialog';
 import {
     Command,
     CommandEmpty,
@@ -15,10 +13,8 @@ import {
 import Icon from '@/ui/atoms/icons/Icon';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
-interface AccountListClientProps {
-    list?: Account[];
-}
+import { AccountDialog } from '../dialog';
+import type { AccountListClientProps } from './types';
 
 export function AccountListClient({
     list
@@ -72,7 +68,6 @@ export function AccountListClient({
                                                     <p className='text-sm font-medium leading-none'>
                                                         {account.name}
                                                     </p>
-                                                    
                                                 </div>
                                             </div>
                                             <div className='hidden sm:flex items-center justify-end gap-2 flex-wrap'>

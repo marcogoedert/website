@@ -6,7 +6,8 @@ import {
     navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
 import { Separator } from '@/components/ui/separator';
-import SelectAccount from '@/ui/molecules/FinanceDashboard/Account/SelectAccount';
+import { AccountSelect } from '@/ui/molecules/FinanceDashboard/account/select';
+
 import HomeMenu from '@/ui/molecules/FinanceDashboard/ActionMenu/HomeMenu';
 
 import { Metadata } from 'next';
@@ -30,7 +31,7 @@ export default function FinanceLayout({
         <main className='pt-16 min-h-screen'>
             <div className='container relative flex items-center justify-between flex-wrap sm:h-16'>
                 <div className='-ml-4 flex items-center justify-start flex-wrap gap-4'>
-                    <SelectAccount />
+                    <AccountSelect />
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>

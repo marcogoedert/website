@@ -1,6 +1,6 @@
 import { Separator } from '@/components/ui/separator';
 import { fetchAccounts } from '@/controller/finance/account.controller';
-import { AccountList } from '@/ui/molecules/FinanceDashboard/Account/AccountList';
+import { AccountList } from '@/ui/molecules/FinanceDashboard/account/list';
 import { PageDescription, PageSubtitle } from '@/ui/organisms/FinanceDashboard/PageHeader';
 
 export default async function SettingsPage(): Promise<JSX.Element> {

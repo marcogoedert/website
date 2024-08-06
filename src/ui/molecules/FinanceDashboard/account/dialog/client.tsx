@@ -35,9 +35,10 @@ import {
     IconFormField,
     iconSchema,
     iconSchemaDefaultValue
-} from '../Dialog/IconForm';
-import { SwitchFormField } from '../Dialog/SwitchForm';
+} from '../../Dialog/IconForm';
+import { SwitchFormField } from '../../Dialog/SwitchForm';
 import { IconKey } from '@/entities/Icon';
+import { AccountDialogClientProps } from './types';
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
@@ -46,16 +47,11 @@ const formSchema = z.object({
     enableCreditCard: z.boolean().default(false).optional()
 });
 
-interface AccountDialogProps extends ButtonProps {
-    account?: Account;
-    callback: () => Promise<void>;
-}
-
-export default function AccountDialog({
+export function AccountDialogClient({
     account,
     callback,
     ...props
-}: AccountDialogProps): JSX.Element {
+}: AccountDialogClientProps): JSX.Element {
     const [open, setOpen] = useState(false);
     const accountName = account?.name || 'New Account';
 

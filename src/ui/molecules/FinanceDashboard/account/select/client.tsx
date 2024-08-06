@@ -19,14 +19,11 @@ import {
 } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { AccountSelectClientProps } from './types';
 
-interface SelectAccountClientProps {
-    list: Account[];
-}
-
-export default function SelectAccountClient({
+export function AccountSelectClient({
     list
-}: SelectAccountClientProps): JSX.Element {
+}: AccountSelectClientProps): JSX.Element {
     const [accounts, setAccounts] = useState<Account[]>(list);
     const [open, setOpen] = useState(false);
     const searchParams = useSearchParams();
