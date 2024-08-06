@@ -4,14 +4,10 @@ import { fetchCategories } from '@/controller/finance/category.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import { getIncomeSideNavItems, getIncomeStats } from '@/lib/finance/income';
 import Icon from '@/ui/atoms/icons/Icon';
-import SelectAccount from '@/ui/molecules/FinanceDashboard/Account/SelectAccount';
-import HomeMenu from '@/ui/molecules/FinanceDashboard/ActionMenu/HomeMenu';
-import { AddIncome } from '@/ui/molecules/FinanceDashboard/Income/AddIncome';
-import IncomeList from '@/ui/molecules/FinanceDashboard/Income/IncomeList';
+import IncomeAdd from '@/ui/molecules/FinanceDashboard/income/add';
+import IncomeList from '@/ui/molecules/FinanceDashboard/income/list';
 import {
-    PageDescription,
     PageHeader,
-    PageHeaderSeparator,
     PageTitle
 } from '@/ui/organisms/FinanceDashboard/PageHeader';
 import {
@@ -39,11 +35,11 @@ export default async function IncomesPage({
     const statistics: Statistics[] = getIncomeStats(incomes);
 
     return (
-        <div className='flex flex-col w-full gap-4'>
+        <>
             <PageHeader>
                 <div className='w-full flex items-center'>
                     <PageTitle>Incomes</PageTitle>
-                    <AddIncome categories={categories}>
+                    <IncomeAdd>
                         <Button
                             className='ml-auto'
                             variant='secondary'
@@ -54,23 +50,30 @@ export default async function IncomesPage({
                             />{' '}
                             Add new
                         </Button>
-                    </AddIncome>
+                    </IncomeAdd>
                 </div>
             </PageHeader>
             <Tabs
                 defaultValue='overview'
-                className='w-full'
+                className='grid grid-cols-12 w-full gap-y-4'
             >
-                <TabsList>
-                    <TabsTrigger value='overview' >Overview</TabsTrigger>
+                <TabsList className='col-span-2'>
+                    <TabsTrigger value='overview'>Overview</TabsTrigger>
                     <TabsTrigger value='history'>History</TabsTrigger>
                 </TabsList>
-                <TabsContent value='overview'>
+                <span className='col-span-10' />
+                <TabsContent
+                    value='overview'
+                    className='col-span-12'
+                >
                     <div className='flex-1'>
                         <StatsPanels stats={statistics} />
                     </div>
                 </TabsContent>
-                <TabsContent value='history'>
+                <TabsContent
+                    value='history'
+                    className='col-span-12'
+                >
                     <div className='flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>
                         {/* SIDE NAVIGATION */}
                         <SideNavigation items={sideNavItems} />
@@ -84,6 +87,6 @@ export default async function IncomesPage({
                     </div>
                 </TabsContent>
             </Tabs>
-        </div>
+        </>
     );
 }

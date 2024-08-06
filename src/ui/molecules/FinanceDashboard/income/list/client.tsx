@@ -1,11 +1,10 @@
 'use client';
 
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import Icon from '@/ui/atoms/icons/Icon';
-import { Category } from '@/entities/Category';
 import { format } from 'date-fns';
 import { Income } from '@/entities/Income';
-import IncomeDialog from '../IncomeDialog';
+
 import {
     Command,
     CommandEmpty,
@@ -26,6 +25,8 @@ import {
 import { formatDate } from '@/lib/format';
 import { useIncomes } from '@/hooks/finance/use-incomes';
 import { Badge } from '@/components/ui/badge';
+import { IncomeListClientProps } from './types';
+import IncomeDialog from '../dialog';
 
 type GroupedItems = { [key: string]: Income[] };
 
@@ -41,21 +42,13 @@ function groupItemsByMonth(items: Income[]): GroupedItems {
     }, dict);
 }
 
-interface IncomeListClientProps {
-    list: Income[];
-    categories: Category[];
-    searchable?: boolean;
-    groupBy?: 'month' | 'category';
-    maxItems?: number;
-}
-
-export default function IncomeListClient({
+export function IncomeListClient({
     list,
-    categories,
-    searchable = false,
     groupBy,
-    maxItems
-}: IncomeListClientProps): JSX.Element {
+    searchable = false,
+    maxItems,
+    categories
+}: IncomeListClientProps) {
     const { incomes, callback } = useIncomes({ list, maxItems });
 
     const getListItem = useCallback(
@@ -150,6 +143,7 @@ export default function IncomeListClient({
             <Command>
                 {searchable && <CommandInput placeholder='Search incomes...' />}
                 <CommandEmpty>No incomes found.</CommandEmpty>
+
                 {groupBy
                     ? Object.entries(groupItemsByMonth(incomes)).map(
                           ([key, values]) => getGroup(key, values)

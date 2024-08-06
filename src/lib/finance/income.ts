@@ -116,7 +116,7 @@ export function getIncomeSideNavItems(incomes: Income[]): SideNavigationItem[] {
         if (!acc.find((item) => item.title === month)) {
             acc.push({
                 title: month,
-                href: `#${encodeURIComponent(month)}`
+                hash: encodeURIComponent(month)
             });
         }
         return acc;

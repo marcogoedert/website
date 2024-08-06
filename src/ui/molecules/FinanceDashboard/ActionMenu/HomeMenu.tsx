@@ -7,14 +7,30 @@ import {
     PopoverContent,
     PopoverTrigger
 } from '@/components/ui/popover';
-import { EllipsisVertical, Settings } from 'lucide-react';
+import {
+    ArrowUpRight,
+    EllipsisVertical,
+    Settings,
+    Settings2,
+    User
+} from 'lucide-react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
+import {
+    Command,
+    CommandGroup,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+    CommandShortcut
+} from '@/components/ui/command';
 
 export default function HomeMenu(): JSX.Element {
     const [open, setOpen] = useState(false);
     const searchParams = useSearchParams();
+    const pathname = usePathname();
 
     const close = useCallback(() => {
         setOpen(false);
@@ -27,7 +43,7 @@ export default function HomeMenu(): JSX.Element {
         >
             <PopoverTrigger asChild>
                 <Avatar
-                    className='h-10 w-10 hover:scale-105 transition-transform duration-300'
+                    className='h-10 w-10 cursor-pointer transition-transform duration-300'
                     aria-expanded={open}
                     role='combobox'
                 >
@@ -37,41 +53,62 @@ export default function HomeMenu(): JSX.Element {
                     />
                     <AvatarFallback>MG</AvatarFallback>
                 </Avatar>
-                {/* <Button
-                    variant='secondary'
-                    role='combobox'
-                    aria-expanded={open}
-                    className='h-10 w-10 inline-flex items-center justify-center rounded-full'
-                >
-                    MG
-                </Button> */}
             </PopoverTrigger>
             <PopoverContent
                 align='end'
                 className='w-[200px] p-0'
             >
-                <Link
-                    href={
-                        searchParams.size === 0
-                            ? '/finance/settings'
-                            : `/finance/settings?${new URLSearchParams(
-                                  searchParams
-                              )}`
-                    }
-                >
-                    <Button
-                        variant='outline'
-                        onClick={close}
-                        className='w-full text-left justify-start items-center rounded-none'
-                    >
-                        <Settings
-                            strokeWidth={1}
-                            size={22}
-                            className='mr-2'
-                        />
-                        Settings
-                    </Button>
-                </Link>
+                <Command>
+                    <div className='block space-y-1 p-2 select-none'>
+                        <p className='text-sm font-medium leading-none'>
+                            Marco Goedert
+                        </p>
+                        <p className='text-xs leading-none text-muted-foreground'>
+                            hello@marcogoedert.com
+                        </p>
+                    </div>
+                    <CommandSeparator />
+                    <CommandList>
+                        <CommandItem
+                            className='p-0'
+                            disabled
+                        >
+                            <Link
+                                className='relative w-full h-max flex items-center gap-0.5 px-2 py-1.5'
+                                href='/finance/profile'
+                                passHref
+                            >
+                                <User
+                                    className='h-4 w-4 mr-2'
+                                    strokeWidth={2}
+                                />
+                                <span>Profile</span>
+                                <CommandShortcut>⌘P</CommandShortcut>
+                            </Link>
+                        </CommandItem>
+                        <CommandItem className='p-0' disabled={pathname === '/finance/settings'}>
+                            <Link
+                                className='relative w-full h-max flex items-center gap-0.5 px-2 py-1.5'
+                                href={
+                                    searchParams.size === 0
+                                        ? '/finance/settings'
+                                        : `/finance/settings?${new URLSearchParams(
+                                              searchParams
+                                          )}`
+                                }
+                                onClick={close}
+                                passHref
+                            >
+                                <Settings2
+                                    className='h-4 w-4 mr-2'
+                                    strokeWidth={2}
+                                />
+                                <span>Settings</span>
+                                <CommandShortcut>⌘S</CommandShortcut>
+                            </Link>
+                        </CommandItem>
+                    </CommandList>
+                </Command>
             </PopoverContent>
         </Popover>
     );

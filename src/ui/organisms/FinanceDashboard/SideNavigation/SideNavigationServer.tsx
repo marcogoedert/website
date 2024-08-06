@@ -1,14 +1,6 @@
 import { Suspense } from 'react';
 import { SideNavigationClient } from './SideNavigationClient';
-
-export interface SideNavigationItem {
-    title: string;
-    href: string;
-}
-
-export interface SideNavigationProps {
-    items: SideNavigationItem[];
-}
+import type { SideNavigationProps } from './SideNavigation.type';
 
 export function SideNavigationServer({
     items

@@ -1,18 +1,14 @@
 'use client';
 
-import { Category } from '@/entities/Category';
-import IncomeDialog from './IncomeDialog';
 import { useIncomes } from '@/hooks/finance/use-incomes';
 
-interface AddIncomeProps {
-    children: React.ReactNode;
-    categories: Category[];
-}
+import { IncomeAddClientProps } from './types';
+import IncomeDialog from '../dialog';
 
-export function AddIncome({
+export function IncomeAddClient({
     children,
     categories
-}: AddIncomeProps): JSX.Element {
+}: IncomeAddClientProps): JSX.Element {
     const { callback } = useIncomes({ list: [] });
     return (
         <IncomeDialog

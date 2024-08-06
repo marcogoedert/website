@@ -3,7 +3,7 @@ import { SideNavigationServer } from './SideNavigationServer';
 import type {
     SideNavigationProps,
     SideNavigationItem
-} from './SideNavigationServer';
+} from './SideNavigation.type';
 
 export {
     SideNavigationServer as SideNavigation,

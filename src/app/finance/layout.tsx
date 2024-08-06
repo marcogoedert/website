@@ -78,7 +78,7 @@ export default function FinanceLayout({
                 <HomeMenu />
             </div>
             <Separator className='my-0' />
-            <div className='container relative space-y-2'>{children}</div>
+            <div className='container relative space-y-4'>{children}</div>
         </main>
     );
 }

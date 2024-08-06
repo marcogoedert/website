@@ -51,10 +51,9 @@ import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { dateSchema, dateSchemaDefaultValue } from '../Dialog/DateForm';
 import { findIconByCategory } from '@/lib/finance/category';
 import { formatAmount, parseFormattedAmount } from '@/lib/finance/income';
-import { Badge } from '@/components/ui/badge';
+import { IncomeDialogClientProps, LooseIncome } from './types';
 
 const MIN_DATE = new Date('1998-02-11');
 const MAX_DATE = new Date('2038-02-11');
@@ -74,24 +73,16 @@ const formSchema = z.object({
                 message: 'Amount must be a number'
             }
         ),
-    date: dateSchema,
+    date: z.coerce.date(),
     categoryId: z.string().min(1).max(50)
 });
 
-type LooseIncome = Omit<Income, 'id'> & { id?: string };
-
-interface IncomeDialogProps extends ButtonProps {
-    income?: LooseIncome;
-    categories: Category[];
-    callback: () => Promise<void>;
-}
-
-export default function IncomeDialog({
+export function IncomeDialogClient({
     income,
     categories,
     callback,
     ...props
-}: IncomeDialogProps): JSX.Element {
+}: IncomeDialogClientProps): JSX.Element {
     const [open, setOpen] = useState(false);
     const [categoryOpen, setCategoryOpen] = useState(false);
     const [virtualIncome, setVirtualIncome] = useState<LooseIncome | null>(
@@ -106,7 +97,7 @@ export default function IncomeDialog({
             amount: formatAmount(virtualIncome?.amount),
             date: virtualIncome?.date
                 ? new Date(virtualIncome.date)
-                : dateSchemaDefaultValue,
+                : new Date(),
             categoryId: virtualIncome?.categoryId || ''
         }
     });

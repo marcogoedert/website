@@ -1,16 +1,15 @@
-import { Separator } from '@/components/ui/separator';
-
 import {
-    PageDescription,
+    PageHeader,
     PageTitle
 } from '@/ui/organisms/FinanceDashboard/PageHeader';
-import { SideNavigation } from '@/ui/organisms/FinanceDashboard/SideNavigation';
+import {
+    SideNavigation,
+    SideNavigationItem
+} from '@/ui/organisms/FinanceDashboard/SideNavigation';
 
-const URL = '/finance/settings';
-
-const items = [
-    { title: 'Bank Accounts', href: `${URL}` },
-    { title: 'Categories', href: `${URL}/categories` }
+const items: SideNavigationItem[] = [
+    { title: 'Bank Accounts', href: `/finance/settings` },
+    { title: 'Categories', href: `/finance/settings/categories` }
 ];
 
 interface SettingsLayoutProps {
@@ -22,14 +21,10 @@ export default function SettingsLayout({
 }: SettingsLayoutProps): JSX.Element {
     return (
         <>
-            <div className='flex flex-col'>
-                <div className='space-y-0.5'>
+            <div className='flex flex-col gap-4'>
+                <PageHeader>
                     <PageTitle>Settings</PageTitle>
-                    <PageDescription className='text-muted-foreground'>
-                        Manage your account settings.
-                    </PageDescription>
-                </div>
-                <Separator className='my-6' />
+                </PageHeader>
                 <div className='flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>
                     <SideNavigation items={items} />
                     <div className='flex-1 lg:max-w-2xl'>

@@ -1,9 +1,7 @@
-import SelectAccount from '@/ui/molecules/FinanceDashboard/Account/SelectAccount';
 import ExpenseList from '@/ui/molecules/FinanceDashboard/Expense/ExpenseList';
-import IncomeList from '@/ui/molecules/FinanceDashboard/Income/IncomeList';
+import IncomeList from '@/ui/molecules/FinanceDashboard/income/list';
 import { fetchExpenses } from '@/controller/finance/expenses.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
-import HomeMenu from '@/ui/molecules/FinanceDashboard/ActionMenu/HomeMenu';
 import {
     Panel,
     PanelContent,
@@ -13,17 +11,14 @@ import {
 } from '@/ui/molecules/FinanceDashboard/Panel';
 import Icon from '@/ui/atoms/icons/Icon';
 import { IconKey } from '@/entities/Icon';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
 import {
-    PageDescription,
     PageHeader,
-    PageHeaderSeparator,
     PageTitle
 } from '@/ui/organisms/FinanceDashboard/PageHeader';
 
-const MAX_ITEMS = 5;
+console.log('FINANCE_HOME_MAX_ITEMS', process.env.FINANCE_HOME_MAX_ITEMS);
+
+const MAX_ITEMS = Number(process.env.FINANCE_HOME_MAX_ITEMS || 5);
 
 interface FinancePageProps {
     searchParams: { [key: string]: string | string[] | undefined };
@@ -72,9 +67,9 @@ export default async function FinancePage({
     return (
         <>
             <PageHeader>
-                <PageTitle>Finance Dashboard 🪙</PageTitle>
+                <PageTitle>Moneyyy B1tCh 🤑🫰</PageTitle>
             </PageHeader>
-            <div className='grid grid-cols-12 gap-2 w-full'>
+            <div className='grid grid-cols-12 gap-4 w-full'>
                 {numericValues.map(({ title, value, icon }, index) => (
                     <div
                         key={index}
@@ -108,12 +103,12 @@ export default async function FinancePage({
                                 month
                             </PanelDescription>
                         </PanelHeader>
-                        <div className='grid grid-cols-1 gap-4 h-full pb-6 px-4'>
-                            <IncomeList
-                                list={recentIncomes}
-                                maxItems={5}
-                            />
-                        </div>
+                        {/* <div className='pb-6 px-4 border border-yellow-400'> */}
+                        <IncomeList
+                            list={recentIncomes}
+                            maxItems={MAX_ITEMS}
+                        />
+                        {/* </div> */}
                     </Panel>
                 </div>
                 <div className={gridContainerClass}>

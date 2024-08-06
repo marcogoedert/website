@@ -1,35 +1,31 @@
 'use server';
 
 import { Suspense } from 'react';
-import IncomeListClient from './IncomeListClient';
+import { IncomeListClient } from './client';
 import { fetchCategories } from '@/controller/finance/category.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
-import { Income } from '@/entities/Income';
+import type { IncomeListServerProps } from './types';
 
-interface IncomeListServerProps {
-    list?: Income[];
-    searchable?: boolean;
-    groupBy?: 'month' | 'category';
-    maxItems?: number;
-}
-
-export default async function IncomeListServer({
+export async function IncomeListServer({
     list,
     groupBy,
     searchable = false,
-    maxItems
+    maxItems,
+    categories,
+    ...props
 }: IncomeListServerProps): Promise<JSX.Element> {
     const incomes = list || (await fetchIncomes());
-    const categories = await fetchCategories();
+    const categoriesList = categories || (await fetchCategories());
 
     return (
         <Suspense fallback={<div>Loading incomes...</div>}>
             <IncomeListClient
-                list={incomes}
-                categories={categories}
+                {...props}
                 searchable={searchable}
                 groupBy={groupBy}
                 maxItems={maxItems}
+                list={incomes}
+                categories={categoriesList}
             />
         </Suspense>
     );
