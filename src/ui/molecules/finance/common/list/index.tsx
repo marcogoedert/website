@@ -80,6 +80,18 @@ const ListItemDescription = React.forwardRef<
 ));
 ListItemDescription.displayName = 'ListItemDescription';
 
+const ListItemContent = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLProps<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+    <div
+        ref={ref}
+        className={cn('ml-auto flex items-center gap-6', className)}
+        {...props}
+    />
+));
+ListItemContent.displayName = 'ListItemContent';
+
 const ListItemAmount = React.forwardRef<
     HTMLDivElement,
     React.HTMLProps<HTMLDivElement>
@@ -98,5 +110,6 @@ export {
     ListItemText,
     ListItemTitle,
     ListItemDescription,
+    ListItemContent,
     ListItemAmount
 };

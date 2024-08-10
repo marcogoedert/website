@@ -1,5 +1,12 @@
 'use client';
 
+/**
+ * - Hook to format data into a list-compatible format
+ * - Pass the openDialog function as a callback to the ListItem component instead of wrapping it with the AccountDialog component
+ * - Remove the AccountDialog component from the IncomeList component and use the openDialog function directly
+ * - Create a generic component derived from the IncomeList component
+ */
+
 import React, { useCallback } from 'react';
 import Icon from '@/ui/atoms/icons/Icon';
 import { format } from 'date-fns';
@@ -13,20 +20,24 @@ import {
     CommandItem,
     CommandList
 } from '@/components/ui/command';
-import {
-    List,
-    ListItem,
-    ListItemAmount,
-    ListItemDescription,
-    ListItemIcon,
-    ListItemText,
-    ListItemTitle
-} from '../../common/list';
+
 import { formatDate } from '@/lib/format';
 import { useIncomes } from '@/hooks/finance/use-incomes';
 import { Badge } from '@/components/ui/badge';
 import { IncomeListClientProps } from './types';
-import IncomeDialog from '../dialog';
+
+import { cn } from '@/lib/utils';
+import {
+    List,
+    ListItem,
+    ListItemAmount,
+    ListItemContent,
+    ListItemDescription,
+    ListItemIcon,
+    ListItemText,
+    ListItemTitle
+} from '@/ui/molecules/finance/common/list';
+import IncomeDialog from '@/ui/molecules/finance/income/dialog';
 
 type GroupedItems = { [key: string]: Income[] };
 
@@ -47,7 +58,8 @@ export function IncomeListClient({
     groupBy,
     searchable = false,
     maxItems,
-    categories
+    categories,
+    className
 }: IncomeListClientProps) {
     const { incomes, callback } = useIncomes({ list, maxItems });
 
@@ -83,7 +95,7 @@ export function IncomeListClient({
                                     {formatDate(income.date)}
                                 </ListItemDescription>
                             </ListItemText>
-                            <div className='ml-auto flex items-center gap-6'>
+                            <ListItemContent>
                                 {income.date > new Date() && (
                                     <Badge variant='default'>
                                         <Icon
@@ -97,7 +109,7 @@ export function IncomeListClient({
                                 <ListItemAmount>
                                     ${income.amount.toFixed(2)}
                                 </ListItemAmount>
-                            </div>
+                            </ListItemContent>
                         </ListItem>
                     </IncomeDialog>
                 </CommandItem>
@@ -139,17 +151,15 @@ export function IncomeListClient({
     );
 
     return (
-        <>
-            <Command>
-                {searchable && <CommandInput placeholder='Search incomes...' />}
-                <CommandEmpty>No incomes found.</CommandEmpty>
+        <Command className={cn(className)}>
+            {searchable && <CommandInput placeholder='Search incomes...' />}
+            <CommandEmpty>No incomes found.</CommandEmpty>
 
-                {groupBy
-                    ? Object.entries(groupItemsByMonth(incomes)).map(
-                          ([key, values]) => getGroup(key, values)
-                      )
-                    : getList('all', incomes)}
-            </Command>
-        </>
+            {groupBy
+                ? Object.entries(groupItemsByMonth(incomes)).map(
+                      ([key, values]) => getGroup(key, values)
+                  )
+                : getList('all', incomes)}
+        </Command>
     );
 }

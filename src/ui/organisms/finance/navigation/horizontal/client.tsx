@@ -1,3 +1,6 @@
+'use client';
+
+import { NavigationProps } from '../types';
 import {
     NavigationMenu,
     NavigationMenuItem,
@@ -5,14 +8,19 @@ import {
     NavigationMenuList,
     navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
+import { useNavigationBar } from '@/hooks/use-navigation-bar';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { NavigationProps } from '../types';
 
-export function NavigationHorizontal({ items }: NavigationProps): JSX.Element {
+export function NavigationHorizontalClient(
+    props: NavigationProps
+): JSX.Element {
+    const { currentUrl, hrefs } = useNavigationBar(props);
+
     return (
         <NavigationMenu>
             <NavigationMenuList>
-                {items.map((item, index) => (
+                {hrefs.map((item, index) => (
                     <NavigationMenuItem key={index}>
                         <Link
                             href={item.href!}
@@ -20,7 +28,12 @@ export function NavigationHorizontal({ items }: NavigationProps): JSX.Element {
                             passHref
                         >
                             <NavigationMenuLink
-                                className={navigationMenuTriggerStyle()}
+                                className={cn(
+                                    navigationMenuTriggerStyle(),
+                                    item.href === currentUrl
+                                        ? 'bg-accent/50 text-accent-foreground'
+                                        : ''
+                                )}
                             >
                                 {item.title}
                             </NavigationMenuLink>

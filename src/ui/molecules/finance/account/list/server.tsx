@@ -4,13 +4,17 @@ import { AccountListClient } from './client';
 import type { AccountListServerProps } from './types';
 
 export async function AccountListServer({
-    list
+    list,
+    searchable = false
 }: AccountListServerProps): Promise<JSX.Element> {
     const accounts = list || (await fetchAccounts());
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <AccountListClient list={accounts} />
+        <Suspense fallback={<div>Loading bank account list...</div>}>
+            <AccountListClient
+                list={accounts}
+                searchable={searchable}
+            />
         </Suspense>
     );
 }

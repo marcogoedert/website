@@ -3,7 +3,7 @@ import { Account } from '@/entities/Account';
 
 export interface AccountDialogServerProps extends ButtonProps {
     account?: Account;
-    callback: () => Promise<void>;
+    callback?: () => Promise<void>;
 }
 
 export interface AccountDialogClientProps extends AccountDialogServerProps {}

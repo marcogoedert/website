@@ -18,7 +18,7 @@ export async function IncomeListServer({
     const categoriesList = categories || (await fetchCategories());
 
     return (
-        <Suspense fallback={<div>Loading incomes...</div>}>
+        <Suspense fallback={<div>Loading incomes list...</div>}>
             <IncomeListClient
                 {...props}
                 searchable={searchable}

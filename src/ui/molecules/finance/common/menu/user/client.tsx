@@ -12,7 +12,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     Command,
-    CommandGroup,
+    // CommandGroup,
     CommandItem,
     CommandList,
     CommandSeparator,
@@ -75,7 +75,7 @@ export function MenuUserClient(): JSX.Element {
                                     strokeWidth={2}
                                 />
                                 <span>Profile</span>
-                                <CommandShortcut>⌘P</CommandShortcut>
+                                {/* <CommandShortcut>⌘P</CommandShortcut> */}
                             </Link>
                         </CommandItem>
                         <CommandItem
@@ -99,7 +99,7 @@ export function MenuUserClient(): JSX.Element {
                                     strokeWidth={2}
                                 />
                                 <span>Settings</span>
-                                <CommandShortcut>⌘S</CommandShortcut>
+                                {/* <CommandShortcut>⌘S</CommandShortcut> */}
                             </Link>
                         </CommandItem>
                     </CommandList>

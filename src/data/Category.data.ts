@@ -52,7 +52,7 @@
   {
     "id": "1717900377524",
     "name": "Entertainment",
-    "icon": "DRAMA"
+    "icon": "BEER"
   },
   {
     "id": "1718021840676",

@@ -4,7 +4,7 @@ import type { NavigationProps } from '../types';
 
 export function NavigationVerticalServer({ items }: NavigationProps): JSX.Element {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Loading vertical navigation...</div>}>
             <NavigationVerticalClient items={items} />
         </Suspense>
     );

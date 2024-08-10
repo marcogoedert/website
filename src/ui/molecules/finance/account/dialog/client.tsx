@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, ButtonProps } from '@/components/ui/button';
 import {
     Dialog,
@@ -110,7 +112,7 @@ export function AccountDialogClient({
             ok = await addAccount(body);
         }
 
-        if (ok) {
+        if (ok && callback) {
             await callback();
         } else {
             const method = account ? 'PATCH' : 'POST';
@@ -122,7 +124,7 @@ export function AccountDialogClient({
     async function onDelete() {
         if (!account) return;
         await deleteAccount(account.id);
-        await callback();
+        if (callback) await callback();
     }
 
     useEffect(() => {

@@ -1,5 +1,4 @@
 import ExpenseList from '@/ui/molecules/finance/Expense/ExpenseList';
-import IncomeList from '@/ui/molecules/finance/income/list';
 import { fetchExpenses } from '@/controller/finance/expenses.controller';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
 import {
@@ -13,6 +12,7 @@ import { PageHeader, PageTitle } from '@/ui/organisms/finance/header';
 import { Stats } from '@/ui/organisms/finance/stats';
 import { Grid } from '@/ui/templates/grid';
 import { Stat } from '@/ui/molecules/finance/common/panel/stat/types';
+import { IncomeList } from '@/ui/organisms/finance/list/income';
 
 const MAX_ITEMS = Number(process.env.FINANCE_HOME_MAX_ITEMS || 5);
 interface FinancePageProps {

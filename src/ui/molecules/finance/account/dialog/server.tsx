@@ -7,7 +7,7 @@ export async function AccountDialogServer({
     ...props
 }: AccountDialogServerProps): Promise<JSX.Element> {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Loading Account Dialog...</div>}>
             <AccountDialogClient {...props}>{children}</AccountDialogClient>
         </Suspense>
     );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Account } from '@/entities/Account';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,6 +30,13 @@ export function AccountSelectClient({
     const [value, setValue] = useState(searchParams.get('bankAccount'));
     const router = useRouter();
     const pathname = usePathname();
+
+    useEffect(() => {
+        const bankAccountParam = searchParams.get('bankAccount');
+        if (bankAccountParam !== value) {
+            setValue(bankAccountParam);
+        }
+    }, [searchParams]);
 
     return (
         <>

@@ -1,5 +1,5 @@
 import { Income } from '@/entities/Income';
-import { SideNavigationItem } from '@/ui/molecules/finance/common/navigation/vertical';
+import { SideNavigationItem } from '@/ui/organisms/finance/navigation/vertical';
 import { Statistics } from '@/ui/organisms/finance/Statistics/Statistics';
 import { formatDate } from 'date-fns';
 
