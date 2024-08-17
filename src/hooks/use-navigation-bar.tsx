@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
     ReadonlyURLSearchParams,
@@ -16,7 +16,14 @@ function getSearchParamsString(searchParams: ReadonlyURLSearchParams): string {
     return searchParams.size > 0 ? `?${searchParams.toString()}` : '';
 }
 
-export function useNavigationBar({ items }: NavigationProps) {
+interface UseNavigationBarProps extends NavigationProps {
+    keepPathname?: boolean;
+}
+
+export function useNavigationBar({
+    items,
+    keepPathname = false
+}: UseNavigationBarProps) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const hash = useHash();
@@ -29,16 +36,19 @@ export function useNavigationBar({ items }: NavigationProps) {
         () =>
             items.map((item) => {
                 const { href, hash } = item;
-                const hrefString = href || pathname;
+                const path = keepPathname
+                    ? `${pathname}${href}`
+                    : href || pathname;
+                // const hrefString = `/${path}`;
                 const searchParamsString =
                     searchParams.size > 0 ? `?${searchParams.toString()}` : '';
                 const hashString = hash ? `#${hash}` : '';
                 return {
                     ...item,
-                    href: `${hrefString}${searchParamsString}${hashString}`
+                    href: `${path}${searchParamsString}${hashString}`
                 };
             }),
-        [items, pathname, searchParams]
+        [items, pathname, searchParams, keepPathname]
     );
 
     return { currentUrl, hrefs };

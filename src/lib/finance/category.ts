@@ -1,7 +1,7 @@
 import { Category } from '@/entities/Category';
 import { IconKey } from '@/entities/Icon';
 
-export function findIconByCategory(
+export function findCategoryIcon(
     categories: Category[],
     categoryId?: string | null,
     defaultIcon: IconKey = 'SHAPES'

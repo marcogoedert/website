@@ -1,32 +1,22 @@
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { fetchIncomes } from '@/controller/finance/incomes.controller';
-import { getIncomeSideNavItems, getIncomeStats } from '@/lib/finance/income';
+import {
+    getIncomeSideNavItems,
+    getIncomeStats,
+    groupIncomeListPanelByMonth
+} from '@/lib/finance/income';
 import Icon from '@/ui/atoms/icons/Icon';
 import { NavigationItem } from '@/ui/organisms/finance/navigation/types';
 import { Stat } from '@/ui/molecules/finance/common/panel/stat/types';
-import IncomeAdd from '@/ui/molecules/finance/income/add';
 import { PageHeader, PageTitle } from '@/ui/organisms/finance/header';
 import { Stats } from '@/ui/organisms/finance/stats';
 import { Navigation } from '@/ui/organisms/finance/navigation';
 import { ListPanel } from '@/ui/organisms/finance/list';
 import { fetchCategories } from '@/controller/finance/category.controller';
-import { formatDate } from '@/lib/format';
-import { format } from 'date-fns';
-import { Income } from '@/entities/Income';
-import { IncomeList } from '@/ui/organisms/finance/list/income';
-// import { IncomeList } from '@/ui/organisms/finance/list/income';
-
-function groupByMonth(incomes: Income[]): Record<string, Income[]> {
-    return incomes.reduce((acc, income) => {
-        const key = format(income.date, 'MMMM yyyy');
-        if (!acc[key]) {
-            acc[key] = [];
-        }
-        acc[key].push(income);
-        return acc;
-    }, {} as Record<string, Income[]>);
-}
+import { formatSearchParams } from '@/lib/format';
+import { Category } from '@/entities/Category';
+import Link from 'next/link';
 
 interface IncomesPageProps {
     searchParams: { [key: string]: string | string[] | undefined };
@@ -41,25 +31,23 @@ export default async function IncomesPage({
     });
     const sideNavItems: NavigationItem[] = getIncomeSideNavItems(incomes);
     const statistics: Stat[] = getIncomeStats(incomes);
-    const categories = await fetchCategories();
+    const categories: Category[] = await fetchCategories();
+    const formattedSearchParams = formatSearchParams(searchParams);
 
     return (
         <>
             <PageHeader>
-                <div className='w-full flex items-center'>
+                <div className='w-full flex items-center justify-between'>
                     <PageTitle>Incomes</PageTitle>
-                    <IncomeAdd>
-                        <Button
-                            className='ml-auto'
-                            variant='secondary'
-                        >
+                    <Link href={`/finance/incomes/new${formattedSearchParams}`}>
+                        <Button variant='secondary'>
                             <Icon
                                 icon='PLUS'
                                 className='mr-2'
-                            />{' '}
+                            />
                             Add new
                         </Button>
-                    </IncomeAdd>
+                    </Link>
                 </div>
             </PageHeader>
             <Tabs
@@ -81,50 +69,12 @@ export default async function IncomesPage({
                         <Navigation.Vertical items={sideNavItems} />
                         <div className='flex-1 lg:max-w-2xl'>
                             <ListPanel
-                                items={groupByMonth(incomes)}
+                                items={groupIncomeListPanelByMonth(
+                                    incomes,
+                                    categories
+                                )}
                                 searchable
-                                transform={(income) => ({
-                                    id: income.id,
-                                    title: income.name,
-                                    searchValue: `${income.id} ${income.name}`,
-                                    description: formatDate(
-                                        new Date(income.date)
-                                    ),
-                                    icon:
-                                        categories.find(
-                                            (category) =>
-                                                category.id ===
-                                                income.categoryId
-                                        )?.icon || 'SHAPES',
-                                    badges: 
-                                    new Date(income.date) > new Date() ?
-                                    [
-                                        {
-                                            variant: 'default',
-                                            children: (
-                                                <>
-                                                    <Icon
-                                                        icon='HOURGLASS'
-                                                        className='mr-1'
-                                                        iconSettings={{
-                                                            size: 18
-                                                        }}
-                                                    />{' '}
-                                                    Pending
-                                                </>
-                                            )
-                                        }
-                                    ]
-                                    : undefined,
-                                    text: `$${income.amount.toFixed(2)}`
-                                })}
                             />
-                            {/* <IncomeList
-                                list={incomes}
-                                searchable
-                                groupBy='month'
-                                className='border'
-                            /> */}
                         </div>
                     </div>
                 </TabsContent>

@@ -18,3 +18,24 @@ export function formatDate(date: Date, displayYear: boolean = false): string {
 
     return format(date, 'd LLL').toUpperCase();
 }
+
+export function formatSearchParams(searchParams: {
+    [key: string]: string | string[] | undefined;
+}): string {
+    const str = Object.keys(searchParams)
+        .map((key) => {
+            const value = searchParams[key];
+            if (!value) {
+                return '';
+            }
+            if (Array.isArray(value)) {
+                return value
+                    .map((v) => `${key}=${encodeURIComponent(v)}`)
+                    .join('&');
+            }
+            return `${key}=${encodeURIComponent(value)}`;
+        })
+        .filter((v) => v)
+        .join('&');
+    return str ? `?${str}` : '';
+}

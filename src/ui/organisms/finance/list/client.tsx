@@ -1,3 +1,5 @@
+'use client';
+
 import {
     Command,
     CommandEmpty,
@@ -6,7 +8,7 @@ import {
     CommandItem,
     CommandList
 } from '@/components/ui/command';
-import { ListPanelClientProps } from './types';
+import { ListItemEntity, ListPanelClientProps } from './types';
 import { cn } from '@/lib/utils';
 import {
     List,
@@ -20,8 +22,13 @@ import {
 } from '@/ui/molecules/finance/common/list';
 import Icon from '@/ui/atoms/icons/Icon';
 import { Badge } from '@/components/ui/badge';
-import { useCallback } from 'react';
-import { useListPanel } from '@/hooks/use-list-panel';
+import { useCallback, useEffect, useRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+// import { useListPanel } from '@/hooks/use-list-panel';
+// import { useDialogContext } from '@/context/dialog';
+// import { NavigationItem } from '../navigation';
+// import Link from 'next/link';
 
 // 1 - Fn: Build the row component with T type
 // 2 - Fn: Group rows by T attribute
@@ -40,32 +47,54 @@ import { useListPanel } from '@/hooks/use-list-panel';
 //     }, dict);
 // }
 
-export function ListPanelClient<T>({
+export function ListPanelClient({
     items,
-    // request,
-    // maxItems,
-    // autoUpdateOnSearchParamsChange,
     searchable = false,
-    className,
-    transform
-}: ListPanelClientProps<T>): JSX.Element {
+    className
+}: // request,
+// maxItems,
+// autoUpdateOnSearchParamsChange,
+ListPanelClientProps): JSX.Element {
     // const { values, callback } = useListPanel<T>({
     //     items,
     //     // request,
     //     maxItems,
     //     autoUpdateOnSearchParamsChange
     // });
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const isMounted = useRef(false);
 
-    const getListItem = useCallback((value: T) => {
+    useEffect(() => {
+        if (!isMounted.current) {
+            isMounted.current = true;
+            return;
+        }
+    }, []);
+
+    const getListItem = useCallback((value: ListItemEntity) => {
         const { id, searchValue, icon, title, description, badges, text } =
-            transform(value);
+            value;
+        console.log('[Item] ', searchValue);
+        let url = '';
+        if (value.link && value.link.href) {
+            const { href, hash } = value.link;
+            url = href;
+            if (searchParams.size > 0) {
+                url += `?${searchParams.toString()}`;
+            }
+            if (hash) {
+                url += `#${hash}`;
+            }
+        }
+
         return (
             <CommandItem
                 key={id}
                 value={searchValue}
                 asChild
             >
-                <ListItem>
+                <ListItem onClick={() => (url ? router.push(url) : null)}>
                     <ListItemIcon>
                         <Icon icon={icon} />
                     </ListItemIcon>
@@ -81,8 +110,17 @@ export function ListPanelClient<T>({
                         {badges?.map((badge, index) => (
                             <Badge
                                 key={index}
-                                {...badge}
-                            />
+                                variant={badge.variant}
+                                className={cn(badge.className)}
+                            >
+                                {badge.icon && (
+                                    <Icon
+                                        icon={badge.icon}
+                                        className='mr-1'
+                                    />
+                                )}
+                                {badge.text}
+                            </Badge>
                         ))}
                         {text && <ListItemAmount>{text}</ListItemAmount>}
                     </ListItemContent>
@@ -91,40 +129,28 @@ export function ListPanelClient<T>({
         );
     }, []);
 
-    const getList = useCallback((key: string, values: T[]): JSX.Element => {
-        return (
-            <CommandList
-                className='gap-1'
-                key={`list-${key}`}
-            >
-                <List>{values.map((value) => getListItem(value))}</List>
-            </CommandList>
-        );
-    }, []);
-
-    const getGroup = useCallback((key: string, values: T[]): JSX.Element => {
-        return (
-            <CommandGroup
-                key={key}
-                heading={key !== 'all' ? key : undefined}
-            >
-                <div
-                    id={key}
-                    className='scroll-m-36'
-                />
-                {getList(key, values)}
-            </CommandGroup>
-        );
-    }, []);
-
     return (
         <Command className={cn(className)}>
             {searchable && <CommandInput placeholder='Search incomes...' />}
             <CommandEmpty>No incomes found.</CommandEmpty>
-
-            {Array.isArray(items)
-                ? getGroup('all', items)
-                : Object.keys(items).map((key) => getGroup(key, items[key]))}
+            <CommandList className='max-h-full'>
+                <List>
+                    {Array.isArray(items)
+                        ? items.map((item) => getListItem(item))
+                        : Object.entries(items).map(([key, values]) => (
+                              <CommandGroup
+                                  key={key}
+                                  heading={key}
+                              >
+                                  <div
+                                      id={key}
+                                      className='scroll-m-36'
+                                  />
+                                  {values.map((item) => getListItem(item))}
+                              </CommandGroup>
+                          ))}
+                </List>
+            </CommandList>
         </Command>
     );
 }

@@ -4,12 +4,12 @@ import { Income } from '@/entities/Income';
 
 export type LooseIncome = Omit<Income, 'id'> & { id?: string };
 
-export interface IncomeDialogServerProps extends ButtonProps {
-    callback: () => Promise<void>;
+export interface IncomeFormServerProps extends ButtonProps {
+    callback?: () => Promise<void>;
     income?: LooseIncome;
     categories?: Category[];
 }
 
-export interface IncomeDialogClientProps extends IncomeDialogServerProps {
+export interface IncomeFormClientProps extends IncomeFormServerProps {
     categories: Category[];
 }

@@ -1,21 +1,21 @@
 import { Suspense } from 'react';
-import { IncomeDialogServerProps } from './types';
-import { IncomeDialogClient } from './client';
+import { IncomeFormClient } from './client';
+import { IncomeFormServerProps } from './types';
 import { fetchCategories } from '@/controller/finance/category.controller';
 
-export async function IncomeDialogServer({
+export async function IncomeFormServer({
     categories,
     ...props
-}: IncomeDialogServerProps): Promise<JSX.Element> {
+}: IncomeFormServerProps): Promise<JSX.Element> {
     if (!categories) {
         categories = await fetchCategories();
     }
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <IncomeDialogClient
+        <Suspense fallback={<div>Loading Income form...</div>}>
+            <IncomeFormClient
                 categories={categories}
                 {...props}
-            ></IncomeDialogClient>
+            ></IncomeFormClient>
         </Suspense>
     );
 }

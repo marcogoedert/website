@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 
 export async function ListPanelServer<T>({
     ...props
-}: ListPanelServerProps<T>): Promise<JSX.Element> {
+}: ListPanelServerProps): Promise<JSX.Element> {
     return (
         <Suspense fallback={<div>Loading list panel...</div>}>
             <ListPanelClient {...props} />

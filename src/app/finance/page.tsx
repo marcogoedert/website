@@ -12,7 +12,9 @@ import { PageHeader, PageTitle } from '@/ui/organisms/finance/header';
 import { Stats } from '@/ui/organisms/finance/stats';
 import { Grid } from '@/ui/templates/grid';
 import { Stat } from '@/ui/molecules/finance/common/panel/stat/types';
-import { IncomeList } from '@/ui/organisms/finance/list/income';
+import { ListPanel } from '@/ui/organisms/finance/list';
+import { getIncomeListPanelData } from '@/lib/finance/income';
+import { fetchCategories } from '@/controller/finance/category.controller';
 
 const MAX_ITEMS = Number(process.env.FINANCE_HOME_MAX_ITEMS || 5);
 interface FinancePageProps {
@@ -30,6 +32,7 @@ export default async function FinancePage({
     const expenses = await fetchExpenses({
         bankAccount: bankAccountParam
     });
+    const categories = await fetchCategories();
 
     const totalIncome = incomes.reduce((acc, i) => acc + i.amount, 0);
     const totalExpense = expenses.reduce((acc, e) => acc + e.amount, 0);
@@ -70,9 +73,10 @@ export default async function FinancePage({
                             </PanelDescription>
                         </PanelHeader>
                         <PanelContent>
-                            <IncomeList
-                                list={recentIncomes}
-                                maxItems={MAX_ITEMS}
+                            <ListPanel
+                                items={recentIncomes.map((income) =>
+                                    getIncomeListPanelData(income, categories)
+                                )}
                             />
                         </PanelContent>
                     </Panel>

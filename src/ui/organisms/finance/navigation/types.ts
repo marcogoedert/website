@@ -1,5 +1,5 @@
 export interface NavigationItem {
-    title: string;
+    title?: string;
     href?: string;
     hash?: string;
 }
